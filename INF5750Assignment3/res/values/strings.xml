@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, INF5750Assignment3Activity!</string>
+    <string name="app_name">INF5750Assignment3</string>
+    <string name="launch_map">Launch Map</string>
+    <string name="launch_diagram">Launch Diagram</string>
+    <string name="launch_messaging">Launch Messaging</string>
+
+</resources>
