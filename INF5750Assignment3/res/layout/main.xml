@@ -4,32 +4,52 @@
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical" >
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="@string/hello" />
-
     <Button
         android:id="@+id/main_button_map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="@string/launch_map" />
-
     <Button
         android:id="@+id/main_button_diagram"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:text="@string/launch_diagram" />
-
     <Button
         android:id="@+id/main_button_messaging"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:text="@string/launch_messaging" />
+    
+    <ScrollView
+        android:id="@+id/main_scrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+
+
+        <LinearLayout
+            android:id="@+id/main_linearLayout1"
+            android:layout_width="fill_parent"
+            android:layout_height="146dp" >
+
+
+            <TextView
+                android:id="@+id/main_infotext"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:text="" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
