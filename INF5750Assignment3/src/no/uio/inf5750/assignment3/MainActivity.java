@@ -1,6 +1,7 @@
 package no.uio.inf5750.assignment3;
 
 import no.uio.inf5750.assignment3.diagram.DiagramActivity;
+import no.uio.inf5750.assignment3.login.LoginActivity;
 import no.uio.inf5750.assignment3.map.MapActivity;
 import no.uio.inf5750.assignment3.messaging.MessagingActivity;
 import android.app.Activity;
@@ -30,6 +31,8 @@ public class MainActivity extends Activity {
         mContext = this;
         
         setButtons();
+	Intent intent = new Intent(mContext, LoginActivity.class);
+	startActivity(intent);
 
     }
     

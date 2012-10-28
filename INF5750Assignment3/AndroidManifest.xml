@@ -31,6 +31,9 @@
         <activity 	android:name=".messaging.MessagingActivity" 
         			android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
+        <activity 	android:name=".login.LoginActivity" 
+        			android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        </activity>
         
     </application>
 
