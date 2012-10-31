@@ -27,6 +27,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/launch_messaging" />
+
+    <Button
+        android:id="@+id/main_button_interpretation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launch_interpretation" />
     
     <ScrollView
         android:id="@+id/main_scrollView1"

@@ -1,6 +1,7 @@
 package no.uio.inf5750.assignment3;
 
 import no.uio.inf5750.assignment3.diagram.DiagramActivity;
+import no.uio.inf5750.assignment3.interpretation.InterpretationActivity;
 import no.uio.inf5750.assignment3.login.LoginActivity;
 import no.uio.inf5750.assignment3.map.MapActivity;
 import no.uio.inf5750.assignment3.messaging.MessagingActivity;
@@ -18,6 +19,7 @@ public class MainActivity extends Activity {
 	private Button mButtonDiagram;
 	private Button mButtonMap;
 	private Button mButtonMessaging;
+	private Button mButtonInterpretation;
 
 	private Context mContext;
 	
@@ -44,6 +46,7 @@ public class MainActivity extends Activity {
 		mTextView = (TextView) findViewById(R.id.main_infotext);
 
 		String response = ConnectionManager.getConnectionManager().doRequest("http://apps.dhis2.org/dev/api/interpretations/cjG99uolq7c.xml");
+		
 		print(response);
 
 		print(ConnectionManager.getConnectionManager().getLog());
@@ -58,7 +61,8 @@ public class MainActivity extends Activity {
 		mButtonDiagram = (Button) findViewById(R.id.main_button_diagram);
 		mButtonMap = (Button) findViewById(R.id.main_button_map);
 		mButtonMessaging = (Button) findViewById(R.id.main_button_messaging);
-
+		mButtonInterpretation = (Button) findViewById(R.id.main_button_interpretation);
+		
 		mButtonDiagram.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -89,6 +93,18 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 
 				Intent intent = new Intent(mContext, MessagingActivity.class);
+				startActivity(intent);
+
+			}
+
+		});
+		
+		mButtonInterpretation.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+
+				Intent intent = new Intent(mContext, InterpretationActivity.class);
 				startActivity(intent);
 
 			}

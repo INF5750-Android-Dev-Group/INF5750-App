@@ -8,5 +8,6 @@
     <string name="launch_messaging">Launch Messaging</string>
     <string name="hello_test">My Test String</string>
     <string name="login_button">Login</string>
+    <string name="launch_interpretation">Launch Interpretation</string>
 
 </resources>
