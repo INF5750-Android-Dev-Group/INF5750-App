@@ -14,7 +14,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -24,11 +23,14 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import android.util.Log;
-import android.widget.TextView;
 
 public class ConnectionManager {
 	private static ConnectionManager mManager = null;
 	private String mUsername, mPassword, mLog;
+	
+	static {
+		mManager =  new ConnectionManager();
+	}
 	
 	private ConnectionManager() 
 	{
@@ -36,12 +38,9 @@ public class ConnectionManager {
 		mPassword = "district";
 		mLog = "";
 	}
+	
 	public static ConnectionManager getConnectionManager() 
 	{
-		if (mManager == null) 
-		{
-			mManager = new ConnectionManager();
-		}
 		return mManager;
 	}
 	

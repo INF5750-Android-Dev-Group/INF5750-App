@@ -1,6 +1,5 @@
 package no.uio.inf5750.assignment3;
 
-import org.w3c.dom.Document;
 import no.uio.inf5750.assignment3.diagram.DiagramActivity;
 import no.uio.inf5750.assignment3.login.LoginActivity;
 import no.uio.inf5750.assignment3.map.MapActivity;
@@ -47,14 +46,12 @@ public class MainActivity extends Activity {
 		String response = ConnectionManager.getConnectionManager().doSampleRequest("http://apps.dhis2.org/dev/api/interpretations/cjG99uolq7c.xml");
 		print(response);
 
-		Document domElement = ConnectionManager.getConnectionManager().getDomElement(response);
 		print(ConnectionManager.getConnectionManager().getLog());
 
 		//getValue()..
 		//getElementValue()..
 
 	}
-
 
 	public void setButtons()
 	{
