@@ -60,7 +60,7 @@ public class ConnectionManager {
 	}
 	
 
-	public String doSampleRequest(String url)
+	public String doRequest(String url)
 	{
 		String output = "";
 
