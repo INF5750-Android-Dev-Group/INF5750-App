@@ -32,12 +32,15 @@ public class Util {
 
 		} catch (ParserConfigurationException e) {
 			Log.e("Error: ", e.getMessage());
+			e.printStackTrace();
 			return null;
 		} catch (SAXException e) {
 			Log.e("Error: ", e.getMessage());
+			e.printStackTrace();
 			return null;
 		} catch (IOException e) {
 			Log.e("Error: ", e.getMessage());
+			e.printStackTrace();
 			return null;
 		}
 		// return DOM

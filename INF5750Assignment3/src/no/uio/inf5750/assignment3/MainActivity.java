@@ -45,7 +45,8 @@ public class MainActivity extends Activity {
 		mOutput = "";
 		mTextView = (TextView) findViewById(R.id.main_infotext);
 
-		String response = ConnectionManager.getConnectionManager().doRequest("http://apps.dhis2.org/dev/api/interpretations/cjG99uolq7c.xml");
+		//String response = ConnectionManager.getConnectionManager().doRequest("http://apps.dhis2.org/dev/api/interpretations/cjG99uolq7c.xml");
+		String response = ConnectionManager.getConnectionManager().doRequest("http://apps.dhis2.org/dev/api/messageConversations.xml");
 		
 		print(response);
 

@@ -1,8 +1,11 @@
 package no.uio.inf5750.assignment3;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.util.Scanner;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -101,12 +104,14 @@ public class ConnectionManager {
 		if(entity!=null)
 		{
 			try {
-				byte[] bytes = new byte[2048];
+				
 
 				InputStream is = entity.getContent();
-				is.read(bytes);
-
-				output= new String(bytes);
+				Scanner sc = new Scanner(is);
+				output = "";
+				while (sc.hasNext()) {
+					output += sc.next();
+				}
 
 			} catch (IllegalStateException e) 
 			{
