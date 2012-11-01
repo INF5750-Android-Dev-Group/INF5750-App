@@ -21,15 +21,15 @@
             </intent-filter>
         </activity>
         
-        <activity 	android:name=".DashboardActivity" 
+        <activity 	android:name=".dashboard.DashboardActivity" 
         			android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
         
-        <activity 	android:name=".MessagingActivity" 
+        <activity 	android:name=".messaging.MessagingActivity" 
         			android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
 
-        <activity 	android:name=".InterpretationActivity" 
+        <activity 	android:name=".interpretation.InterpretationActivity" 
         			android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
         

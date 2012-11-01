@@ -1,5 +1,6 @@
 package no.uio.inf5750.assignment3;
 
+import no.uio.inf5750.assignment3.dashboard.DashboardActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
