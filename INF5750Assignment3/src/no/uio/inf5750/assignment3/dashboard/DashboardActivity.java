@@ -60,7 +60,7 @@ public class DashboardActivity extends Activity {
 	Drawable drawable1;
 	Drawable drawable2;
 	public void setImages()
-	{ //fetching the images in a thread for making things appear smoother
+	{ //fetching data in a thread for making things appear smoother
 		
 		mProgressDialog = ProgressDialog.show(mContext, "Loading", "Please wait..");
 		
@@ -68,6 +68,8 @@ public class DashboardActivity extends Activity {
 			
 			public void run()
 			{
+				updateButtons();
+				
 				if(drawable1!=null)
 		        	mImageView1.setImageDrawable(drawable1);
 		        
@@ -77,7 +79,6 @@ public class DashboardActivity extends Activity {
 		        if(mProgressDialog!=null)
 		        	mProgressDialog.dismiss();
 			}
-			
 		};
 
 		
@@ -85,6 +86,7 @@ public class DashboardActivity extends Activity {
 		{
 			public void run()
 			{
+				UpdateDaemon.getDaemon().update();
 				drawable1 = ConnectionManager.getConnectionManager().getImage("http://apps.dhis2.org/demo/api/charts/EbRN2VIbPdV/data");
 				drawable2 = ConnectionManager.getConnectionManager().getImage("http://apps.dhis2.org/demo/api/charts/CiooTWsT3AP/data");
 		        
@@ -94,13 +96,18 @@ public class DashboardActivity extends Activity {
 		getImageThread.start();	
 		
 	}
+	
+	public void updateButtons()
+	{
+		mButtonMessaging.setText(getString(R.string.launch_messaging) + " (" + UpdateDaemon.getDaemon().getUnreadMessages() + ")");
+	}
 
 	public void setButtons()
 	{
-		UpdateDaemon.getDaemon().update();
+		
 		mButtonMessaging = (Button) findViewById(R.id.main_button_messaging);
 		mButtonInterpretation = (Button) findViewById(R.id.main_button_interpretation);
-		mButtonMessaging.setText(getString(R.string.launch_messaging) + " (" + UpdateDaemon.getDaemon().getUnreadMessages() + ")");
+		mButtonMessaging.setText(getString(R.string.launch_messaging));
 		mButtonMessaging.setOnClickListener(new OnClickListener(){
 
 			public void onClick(View v) {

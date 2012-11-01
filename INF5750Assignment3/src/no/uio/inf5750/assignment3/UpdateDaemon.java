@@ -45,6 +45,8 @@ public class UpdateDaemon {
 		
 		String messageList = ConnectionManager.getConnectionManager().doRequest("http://apps.dhis2.org/dev/api/messageConversations.xml");
 		Document doc = Util.getDomElement(messageList);
+		if(doc==null)
+			return;
 		NodeList list = doc.getChildNodes();
 		NodeList metadata = list.item(0).getChildNodes();
 		mMessages = null;
