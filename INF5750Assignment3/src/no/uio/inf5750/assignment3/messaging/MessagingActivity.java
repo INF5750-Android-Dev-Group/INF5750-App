@@ -61,10 +61,10 @@ public class MessagingActivity extends Activity {
 			String[] values = new String[messages.getLength()];
 
 			for (int i = 0; i < messages.getLength(); i++) {
-				TextView text = new TextView(this);
+				/*TextView text = new TextView(this);
 				NamedNodeMap map = messages.item(i).getAttributes();
 				text.setText(map.getNamedItem("name").getNodeValue());
-				layout.addView(text);
+				layout.addView(text);*/
 				values[i] = messages.item(i).getAttributes().getNamedItem("name").getNodeValue();
 			}
 
@@ -89,7 +89,7 @@ public class MessagingActivity extends Activity {
 
 	public void setListView(String[] values)
 	{
-		//ArrayAdapter arrayAdapter = new ArrayAdapter(mContext, R.layout.list_item, values);
-		//mListView.setAdapter(arrayAdapter);
+		ArrayAdapter arrayAdapter = new ArrayAdapter(mContext, R.layout.list_item, values);
+		mListView.setAdapter(arrayAdapter);
 	}
 }
