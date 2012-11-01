@@ -28,6 +28,10 @@
         <activity 	android:name=".messaging.MessagingActivity" 
         			android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
+        
+        <activity 	android:name=".messaging.MessageActivity" 
+        			android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        </activity>
 
         <activity 	android:name=".interpretation.InterpretationActivity" 
         			android:theme="@android:style/Theme.NoTitleBar.Fullscreen">

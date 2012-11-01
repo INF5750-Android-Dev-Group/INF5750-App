@@ -13,8 +13,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,10 +27,14 @@ import android.widget.Toast;
 public class MessagingActivity extends Activity {
 	/** Called when the activity is first created. */
 	String mMessages = "";
+	private Button mButtonMessage;
+	private Context mContext;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.messaging);
+		mContext = this;
+		setButton();
 		update();
 	}
 	public void update() {
@@ -41,5 +49,20 @@ public class MessagingActivity extends Activity {
 				msgList.addView(text);
 			}
 		} 
+	}
+	
+	public void setButton(){
+		mButtonMessage = (Button) findViewById(R.id.show_message_button);
+		mButtonMessage.setText("Show message");
+		mButtonMessage.setOnClickListener(new OnClickListener(){
+
+			public void onClick(View v) {
+				Intent intent = new Intent(mContext, MessageActivity.class);
+				startActivity(intent);
+
+			}
+
+		});
+
 	}
 }
