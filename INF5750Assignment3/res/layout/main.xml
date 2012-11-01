@@ -2,60 +2,45 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/Blue"
     android:gravity="center_horizontal"
-    android:orientation="vertical" >
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/hello" />
-    <Button
-        android:id="@+id/main_button_map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/launch_map" />
-    <Button
-        android:id="@+id/main_button_diagram"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/launch_diagram" />
-    <Button
-        android:id="@+id/main_button_messaging"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/launch_messaging" />
-
-    <Button
-        android:id="@+id/main_button_interpretation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/launch_interpretation" />
-    
-    <ScrollView
-        android:id="@+id/main_scrollView1"
+    android:orientation="vertical"
+    android:padding="5dp" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:baselineAligned="false" >
+
+        <Button
+            android:id="@+id/main_button_messaging"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="10dp"
+            android:text="@string/launch_messaging" />
 
+        <Button
+            android:id="@+id/main_button_interpretation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/launch_interpretation" />
 
-
-        <LinearLayout
-            android:id="@+id/main_linearLayout1"
-            android:layout_width="fill_parent"
-            android:layout_height="146dp" >
-
-
-            <TextView
-                android:id="@+id/main_infotext"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:text="" />
-
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/main_imageview1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/placeholder" />
+
+    <ImageView
+        android:id="@+id/main_imageview2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/placeholder" />
 
 </LinearLayout>

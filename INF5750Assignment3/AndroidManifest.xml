@@ -21,21 +21,15 @@
             </intent-filter>
         </activity>
         
-        <activity 	android:name=".diagram.DiagramActivity" 
+        <activity 	android:name=".DashboardActivity" 
         			android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
         
-        <activity 	android:name=".map.MapActivity" 
+        <activity 	android:name=".MessagingActivity" 
         			android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
-        
-        <activity 	android:name=".messaging.MessagingActivity" 
-        			android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-        </activity>
-        <activity 	android:name=".login.LoginActivity" 
-        			android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-        </activity>
-        <activity 	android:name=".interpretation.InterpretationActivity" 
+
+        <activity 	android:name=".InterpretationActivity" 
         			android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
         

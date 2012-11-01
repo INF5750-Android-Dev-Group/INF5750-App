@@ -25,6 +25,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 public class ConnectionManager {
@@ -62,6 +63,58 @@ public class ConnectionManager {
 		mPassword = password;
 	}
 	
+	public Drawable getImage(String url)
+    {
+    	Drawable drawable = null;
+    	
+    	HttpClient httpclient = new DefaultHttpClient();
+    	
+    	String data = mUsername+':'+mPassword;
+    	
+    	addToLog("Starting image request..");
+    	
+    	String encoding = new String(Base64.encodeBase64(data.getBytes()));
+    	HttpGet httpget = new HttpGet(url);
+    	httpget.setHeader("Authorization", "Basic " + encoding);
+    	
+    	addToLog("executing image request " + httpget.getRequestLine());
+    	HttpResponse response = null;
+		try {
+			response = httpclient.execute(httpget);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		HttpEntity entity = null;
+		if(response!=null)
+		{
+			entity = response.getEntity();
+		}
+		
+		if(entity!=null)
+		{
+				try {
+					InputStream is = entity.getContent();
+					drawable = Drawable.createFromStream(is, "src name");
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		else
+		{
+			System.out.println("entity is null!");
+		}
+		
+		return drawable;
+    }
 
 	public String doRequest(String url)
 	{
@@ -72,15 +125,15 @@ public class ConnectionManager {
 		String data = mUsername+':'+mPassword;
 
 		String encoding = new String(Base64.encodeBase64(data.getBytes()));
-		HttpGet httppost = new HttpGet(url);
-		httppost.setHeader("Authorization", "Basic " + encoding);
+		HttpGet httpget = new HttpGet(url);
+		httpget.setHeader("Authorization", "Basic " + encoding);
 
 		HttpResponse response = null;
 		addToLog("Starting request..");
 		boolean failed = false;
 		addToLog(url);
 		try {
-			response = httpclient.execute(httppost);
+			response = httpclient.execute(httpget);
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
