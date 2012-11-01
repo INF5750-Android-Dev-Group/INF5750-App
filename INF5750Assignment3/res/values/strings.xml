@@ -11,5 +11,7 @@
     <string name="launch_interpretation">Launch Interpretation</string>
     <string name="login_username">Username:</string>
     <string name="login_password">Password:</string>
+    <string name="messaging">Messaging</string>
+    <string name="interpretation">Interpretation</string>
 
 </resources>
