@@ -14,8 +14,11 @@ import org.w3c.dom.NodeList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -30,15 +33,15 @@ public class MessagingActivity extends Activity {
 	private ListView mListView;
 	private Context mContext;
 	String mMessages = "";
+	private Button mButtonMessage;
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.messaging);
-
 		mContext = this;
-		
+		setButton();
 		setupViews();
-		
 		update();
 	}
 	
@@ -55,7 +58,8 @@ public class MessagingActivity extends Activity {
           });
 	}
 	
-	public void update() {
+	public void update()
+	{
 		UpdateDaemon.getUpdateDaemon().update();
 		NodeList messages = UpdateDaemon.getUpdateDaemon().getMessages();
 		LinearLayout msgList = (LinearLayout) findViewById(R.id.message_list);
@@ -75,9 +79,24 @@ public class MessagingActivity extends Activity {
 		} 
 	}
 	
+	public void setButton()
+	{
+		mButtonMessage = (Button) findViewById(R.id.show_message_button);
+		mButtonMessage.setText("Show message");
+		mButtonMessage.setOnClickListener(new OnClickListener(){
+
+			public void onClick(View v) {
+				Intent intent = new Intent(mContext, MessageActivity.class);
+				startActivity(intent);
+
+			}
+
+		});
+	}
+
 	public void setListView(String[] values)
 	{
-		ArrayAdapter arrayAdapter = new ArrayAdapter(mContext, R.layout.list_item, values);
-    	mListView.setAdapter(arrayAdapter);
+		//ArrayAdapter arrayAdapter = new ArrayAdapter(mContext, R.layout.list_item, values);
+    	//mListView.setAdapter(arrayAdapter);
 	}
 }
