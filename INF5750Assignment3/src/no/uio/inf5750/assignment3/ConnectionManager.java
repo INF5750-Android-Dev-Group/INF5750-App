@@ -31,54 +31,54 @@ import android.util.Log;
 public class ConnectionManager {
 	private static ConnectionManager mManager = null;
 	private String mUsername, mPassword, mLog;
-	
+
 	static {
 		mManager =  new ConnectionManager();
 	}
-	
+
 	private ConnectionManager() 
 	{
 		mUsername = "admin";
 		mPassword = "district";
 		mLog = "";
 	}
-	
+
 	public static ConnectionManager getConnectionManager() 
 	{
 		return mManager;
 	}
-	
+
 	public String getUsername() 
 	{
 		return mUsername;
 	}
-	
+
 	public void setUsername(String username) 
 	{
 		mUsername = username;
 	}
-	
+
 	public void setPassword(String password) 
 	{
 		mPassword = password;
 	}
-	
+
 	public Drawable getImage(String url)
-    {
-    	Drawable drawable = null;
-    	
-    	HttpClient httpclient = new DefaultHttpClient();
-    	
-    	String data = mUsername+':'+mPassword;
-    	
-    	addToLog("Starting image request..");
-    	
-    	String encoding = new String(Base64.encodeBase64(data.getBytes()));
-    	HttpGet httpget = new HttpGet(url);
-    	httpget.setHeader("Authorization", "Basic " + encoding);
-    	
-    	addToLog("executing image request " + httpget.getRequestLine());
-    	HttpResponse response = null;
+	{
+		Drawable drawable = null;
+
+		HttpClient httpclient = new DefaultHttpClient();
+
+		String data = mUsername+':'+mPassword;
+
+		addToLog("Starting image request..");
+
+		String encoding = new String(Base64.encodeBase64(data.getBytes()));
+		HttpGet httpget = new HttpGet(url);
+		httpget.setHeader("Authorization", "Basic " + encoding);
+
+		addToLog("executing image request " + httpget.getRequestLine());
+		HttpResponse response = null;
 		try {
 			response = httpclient.execute(httpget);
 		} catch (ClientProtocolException e) {
@@ -88,33 +88,33 @@ public class ConnectionManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		HttpEntity entity = null;
 		if(response!=null)
 		{
 			entity = response.getEntity();
 		}
-		
+
 		if(entity!=null)
 		{
-				try {
-					InputStream is = entity.getContent();
-					drawable = Drawable.createFromStream(is, "src name");
-				} catch (IllegalStateException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			try {
+				InputStream is = entity.getContent();
+				drawable = Drawable.createFromStream(is, "src name");
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		else
 		{
 			System.out.println("entity is null!");
 		}
-		
+
 		return drawable;
-    }
+	}
 
 	public String doRequest(String url)
 	{
@@ -157,13 +157,13 @@ public class ConnectionManager {
 		if(entity!=null)
 		{
 			try {
-				
+
 
 				InputStream is = entity.getContent();
 				Scanner sc = new Scanner(is);
 				output = "";
 				while (sc.hasNext()) {
-					output += sc.next();
+					output += sc.nextLine();
 				}
 
 			} catch (IllegalStateException e) 
@@ -189,7 +189,7 @@ public class ConnectionManager {
 	{
 		return mLog;
 	}
-	
+
 	public void clearLog() 
 	{
 		mLog = "";

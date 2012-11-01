@@ -4,6 +4,7 @@ import no.uio.inf5750.assignment3.ConnectionManager;
 import no.uio.inf5750.assignment3.R;
 import no.uio.inf5750.assignment3.R.id;
 import no.uio.inf5750.assignment3.R.layout;
+import no.uio.inf5750.assignment3.UpdateDaemon;
 import no.uio.inf5750.assignment3.interpretation.InterpretationActivity;
 import no.uio.inf5750.assignment3.messaging.MessagingActivity;
 import android.app.Activity;
@@ -99,13 +100,12 @@ public class DashboardActivity extends Activity {
 
 	public void setButtons()
 	{
-
+		UpdateDaemon.getUpdateDaemon().update();
 		mButtonMessaging = (Button) findViewById(R.id.main_button_messaging);
 		mButtonInterpretation = (Button) findViewById(R.id.main_button_interpretation);
-
+		mButtonMessaging.setText(getString(R.string.launch_messaging) + " (" + UpdateDaemon.getUpdateDaemon().getUnreadMessages() + ")");
 		mButtonMessaging.setOnClickListener(new OnClickListener(){
 
-			@Override
 			public void onClick(View v) {
 
 				Intent intent = new Intent(mContext, MessagingActivity.class);
@@ -117,7 +117,6 @@ public class DashboardActivity extends Activity {
 		
 		mButtonInterpretation.setOnClickListener(new OnClickListener(){
 
-			@Override
 			public void onClick(View v) {
 
 				Intent intent = new Intent(mContext, InterpretationActivity.class);

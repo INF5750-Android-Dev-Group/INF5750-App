@@ -26,9 +26,8 @@ public class Util {
 
 			DocumentBuilder db = dbf.newDocumentBuilder();
 
-			InputSource is = new InputSource();
-			is.setCharacterStream(new StringReader(xml));
-			doc = db.parse(is); 
+			InputSource is = new InputSource(new StringReader(xml));
+			doc = db.parse(is);
 
 		} catch (ParserConfigurationException e) {
 			Log.e("Error: ", e.getMessage());
@@ -51,7 +50,7 @@ public class Util {
 		NodeList n = item.getElementsByTagName(str);
 		return getElementValue(n.item(0));
 	}
-	
+
 	public static final String getElementValue( Node elem ) 
 	{
 		Node child;
@@ -66,5 +65,5 @@ public class Util {
 		}
 		return "";
 	} 
-	
+
 }

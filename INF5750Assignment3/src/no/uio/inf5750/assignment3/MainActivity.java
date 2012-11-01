@@ -34,7 +34,6 @@ public class MainActivity extends Activity {
 	}
 	class LoginOnClickListener implements OnClickListener {
 
-		@Override
 		public void onClick(View arg0) {
 			
 			
