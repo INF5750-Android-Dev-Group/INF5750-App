@@ -10,37 +10,75 @@ import no.uio.inf5750.assignment3.R;
 import no.uio.inf5750.assignment3.UpdateDaemon;
 import no.uio.inf5750.assignment3.Util;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Path.FillType;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class InterpretationActivity extends Activity {
-	LinearLayout mLayout;
+	private LinearLayout mImageLayout, mLayout;
+	private ImageView mImageContainer;
+	private Button mButtonAddInterpretation, mButtonRefreshChart;
+	private TextView mInterpretations;
+	private EditText mEditTextInterpretation;
+	
+	ConnectionManager connectionManager;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.interpretation);
+		
+		
+		setActivityObjects();
 		update();
 	}
 	
+	//Activity Methods\\
 	void update() {
-		mLayout = (LinearLayout) findViewById(R.id.interpretation_layout);
-		mLayout.removeAllViews();
+		String tempString = "";
+		
 		NodeList interpretations = UpdateDaemon.getDaemon().getInterpretations();
-		for (int i = 0; i < interpretations.getLength(); i++) {
-			
-			TextView text = new TextView(this);
-			NamedNodeMap map = interpretations.item(i).getAttributes();
-			text.setText(map.getNamedItem("href").getNodeValue()+".xml");
-			mLayout.addView(text);
-			addImageToView(map.getNamedItem("href").getNodeValue());
-			if (i == 1) {
-				break;
+		NamedNodeMap map = interpretations.item(0).getAttributes();
+		
+		String URLToInterpretation = ConnectionManager.getConnectionManager().doRequest(map.getNamedItem("href").getNodeValue() + ".xml");
+		
+		NodeList interpretationXML = Util.getDomElement(URLToInterpretation).getChildNodes().item(0).getChildNodes();
+		
+		
+		//Get thread starter
+		for(int i = 0; i < interpretationXML.getLength(); i++)
+		{
+			if(interpretationXML.item(i).getNodeName().equals("text"))
+			{
+				mInterpretations.setText(interpretationXML.item(i).getChildNodes().item(0).getNodeValue());
+			}
+
+		}
+		
+		/* TODO: needs a quick fix
+		//Get comments after thread starter
+		for(int i = 0; i < interpretationXML.getLength(); i++)
+		{
+			if(interpretationXML.item(i).getNodeName().equals("comments"))
+			{
+				NodeList comments = interpretationXML.item(i).getChildNodes();
+				
+				for(int j = 0; j < comments.getLength(); j++)
+				{
+					tempString = comments.item(i).getNodeValue();
+					mInterpretations.setText(tempString);
+				}
 			}
 		}
+		*/
 	}
 	
 	void addImageToView(String url) {
@@ -60,6 +98,35 @@ public class InterpretationActivity extends Activity {
 			}
 		}
 		
+		
+	}
+
+	void setActivityObjects()
+	{
+		mInterpretations = (TextView) findViewById(R.id.txtInterpretations);
+		
+		mLayout = (LinearLayout) findViewById(R.id.layout_imageContainer);
+		
+		mButtonAddInterpretation = (Button) findViewById(R.id.btnInterpretation_add);		
+		mButtonAddInterpretation.setOnClickListener(new OnClickListener() 
+		{	
+			@Override
+			public void onClick(View v) 
+			{
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		mButtonRefreshChart = (Button) findViewById(R.id.btnInterpretation_refresh);
+		mButtonRefreshChart.setOnClickListener(new OnClickListener() 
+		{	
+			@Override
+			public void onClick(View v) 
+			{
+				update();				
+			}
+		});
 		
 	}
 }
