@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -27,13 +28,13 @@ public class MessagingActivity extends Activity {
 	private Context mContext;
 	String mMessages = "";
 	private Button mButtonMessage;
+	String[] mMessageIDs;
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.messaging);
 		mContext = this;
-		setButton();
 		setupViews();
 		update();
 	}
@@ -44,10 +45,10 @@ public class MessagingActivity extends Activity {
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				// When clicked, show a toast with the TextView text
-				Toast.makeText(getApplicationContext(), ((TextView) view).getText().toString(),
-						Toast.LENGTH_SHORT).show();
-			}
+					Intent intent = new Intent(mContext, MessageActivity.class);
+					intent.putExtra("message", mMessageIDs[position]);
+					startActivity(intent);
+				}
 		});
 	}
 
@@ -59,6 +60,7 @@ public class MessagingActivity extends Activity {
 		if (messages != null) {
 
 			String[] values = new String[messages.getLength()];
+			mMessageIDs = new String[messages.getLength()];
 
 			for (int i = 0; i < messages.getLength(); i++) {
 				/*TextView text = new TextView(this);
@@ -66,25 +68,11 @@ public class MessagingActivity extends Activity {
 				text.setText(map.getNamedItem("name").getNodeValue());
 				layout.addView(text);*/
 				values[i] = messages.item(i).getAttributes().getNamedItem("name").getNodeValue();
+				mMessageIDs[i] = messages.item(i).getAttributes().getNamedItem("href").getNodeValue();
 			}
 
 			setListView(values);
 		} 
-	}
-
-	public void setButton()
-	{
-		mButtonMessage = (Button) findViewById(R.id.show_message_button);
-		mButtonMessage.setText("Show message");
-		mButtonMessage.setOnClickListener(new OnClickListener(){
-
-			public void onClick(View v) {
-				Intent intent = new Intent(mContext, MessageActivity.class);
-				startActivity(intent);
-
-			}
-
-		});
 	}
 
 	public void setListView(String[] values)

@@ -1,8 +1,6 @@
 package no.uio.inf5750.assignment3.interpretation;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import no.uio.inf5750.assignment3.ConnectionManager;
@@ -10,10 +8,7 @@ import no.uio.inf5750.assignment3.R;
 import no.uio.inf5750.assignment3.UpdateDaemon;
 import no.uio.inf5750.assignment3.Util;
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Path.FillType;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -110,7 +105,6 @@ public class InterpretationActivity extends Activity {
 		mButtonAddInterpretation = (Button) findViewById(R.id.btnInterpretation_add);		
 		mButtonAddInterpretation.setOnClickListener(new OnClickListener() 
 		{	
-			@Override
 			public void onClick(View v) 
 			{
 				// TODO Auto-generated method stub
@@ -121,7 +115,6 @@ public class InterpretationActivity extends Activity {
 		mButtonRefreshChart = (Button) findViewById(R.id.btnInterpretation_refresh);
 		mButtonRefreshChart.setOnClickListener(new OnClickListener() 
 		{	
-			@Override
 			public void onClick(View v) 
 			{
 				update();				

@@ -11,10 +11,8 @@
         android:layout_height="wrap_content"
         android:text="@string/hello" />
 
-
-
     <LinearLayout
-        android:id="@+id/message"
+        android:id="@+id/message_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
