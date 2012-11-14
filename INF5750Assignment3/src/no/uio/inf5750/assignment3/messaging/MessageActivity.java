@@ -25,10 +25,8 @@ public class MessageActivity extends Activity{
 	}
 	
 	public void showMessage() {
-		LinearLayout layout = (LinearLayout) findViewById(R.id.message_layout);
-		TextView text = new TextView(this);
-		text.setText(mMessage);
-		layout.addView(text);
+		TextView title = (TextView) findViewById(R.id.message_title);
+		title.setText(mMessage);
 	}
 
 }

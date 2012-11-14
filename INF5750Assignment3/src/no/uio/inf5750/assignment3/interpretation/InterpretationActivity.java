@@ -40,7 +40,7 @@ public class InterpretationActivity extends Activity {
 	void update() {
 		String tempString = "";
 		
-		NodeList interpretations = UpdateDaemon.getDaemon().getInterpretations();
+		NodeList interpretations = UpdateDaemon.getDaemon().getInterpretationList();
 		NamedNodeMap map = interpretations.item(0).getAttributes();
 		
 		String URLToInterpretation = ConnectionManager.getConnectionManager().doRequest(map.getNamedItem("href").getNodeValue() + ".xml");

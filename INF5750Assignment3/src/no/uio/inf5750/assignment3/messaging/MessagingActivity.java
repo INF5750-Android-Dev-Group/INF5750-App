@@ -54,25 +54,18 @@ public class MessagingActivity extends Activity {
 
 	public void update() {
 		UpdateDaemon.getDaemon().update();
-		NodeList messages = UpdateDaemon.getDaemon().getMessages();
 		LinearLayout layout = (LinearLayout) findViewById(R.id.message_list);
 		layout.removeAllViews();
-		if (messages != null) {
+		int numMessages = UpdateDaemon.getDaemon().getNumberOfMessages();
+		String[] values = new String[numMessages];
+		mMessageIDs = new String[numMessages];
 
-			String[] values = new String[messages.getLength()];
-			mMessageIDs = new String[messages.getLength()];
+		for (int i = 0; i < numMessages; i++) {
+			values[i] = UpdateDaemon.getDaemon().getMessageName(i); 
+			mMessageIDs[i] = UpdateDaemon.getDaemon().getMessageUrl(i);
+		}
 
-			for (int i = 0; i < messages.getLength(); i++) {
-				/*TextView text = new TextView(this);
-				NamedNodeMap map = messages.item(i).getAttributes();
-				text.setText(map.getNamedItem("name").getNodeValue());
-				layout.addView(text);*/
-				values[i] = messages.item(i).getAttributes().getNamedItem("name").getNodeValue();
-				mMessageIDs[i] = messages.item(i).getAttributes().getNamedItem("href").getNodeValue();
-			}
-
-			setListView(values);
-		} 
+		setListView(values);
 	}
 
 	public void setListView(String[] values)

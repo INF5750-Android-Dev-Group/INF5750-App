@@ -1,14 +1,15 @@
 package no.uio.inf5750.assignment3;
 
+import java.util.HashMap;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
-import android.util.Log;
-
 public class UpdateDaemon {
 	private static UpdateDaemon mDaemon;
-	private NodeList mMessages, mInterpretations;
+	private NodeList mMessageList, mInterpretationList;
+	private HashMap<String, NodeList> mMessages, mInterpretations;
 	private int mUnread;
 	
 	static {
@@ -20,7 +21,8 @@ public class UpdateDaemon {
 	}
 	
 	private UpdateDaemon() {
-		
+		mMessages = new HashMap<String, NodeList>();
+		mInterpretations = new HashMap<String, NodeList>();
 	}
 	
 	public void update() {
@@ -33,10 +35,10 @@ public class UpdateDaemon {
 		Document doc = Util.getDomElement(messageList);
 		NodeList list = doc.getChildNodes();
 		NodeList metadata = list.item(0).getChildNodes();
-		mInterpretations = null;
+		mInterpretationList = null;
 		for (int i = 0; i < metadata.getLength(); i++) {
 			if (metadata.item(i).getNodeName().equals("interpretations")) {
-				mInterpretations = metadata.item(i).getChildNodes();
+				mInterpretationList = metadata.item(i).getChildNodes();
 			}
 		}
 	}
@@ -49,40 +51,68 @@ public class UpdateDaemon {
 			return;
 		NodeList list = doc.getChildNodes();
 		NodeList metadata = list.item(0).getChildNodes();
-		mMessages = null;
+		mMessageList = null;
 		mUnread = 0;
 		for (int i = 0; i < metadata.getLength(); i++) {
 			if (metadata.item(i).getNodeName().equals("messageConversations")) {
-				mMessages = metadata.item(i).getChildNodes();
-				for (int j = 0; j < mMessages.getLength(); j++) {
-					NamedNodeMap map = mMessages.item(j).getAttributes();
+				mMessageList = metadata.item(i).getChildNodes();
+				for (int j = 0; j < mMessageList.getLength(); j++) {
+					NamedNodeMap map = mMessageList.item(j).getAttributes();
 					if ( map.getNamedItem("read").getNodeValue().equals("false") ) {
 						mUnread += 1;
 					}
 				}
+				break;
 			}
 		}
 	}
 	
-	public NodeList getMessages() {
-		if (mMessages == null) {
+	public NodeList getMessageList() {
+		if (mMessageList == null) {
 			updateMessages();
 		}
-		return mMessages;
+		return mMessageList;
 	}
 	
-	public NodeList getInterpretations() {
-		if (mInterpretations == null) {
+	public NodeList getInterpretationList() {
+		if (mInterpretationList == null) {
 			updateInterpretations();
 		}
-		return mInterpretations;
+		return mInterpretationList;
 	}
 	
 	public int getUnreadMessages() {
-		if (mMessages == null) {
+		if (mMessageList == null) {
 			updateMessages();
 		}
 		return mUnread;
+	}
+	
+	public NodeList getMessageContent(String id) {
+		NodeList ret = mMessages.get(id);
+		if (ret == null) {
+			
+		}
+		return ret;
+	}
+	
+	public String getMessageName(int id) {
+		return getMessageList().item(id).getAttributes().getNamedItem("name").getNodeValue();
+	}
+	
+	public String getMessageUrl(int id) {
+		return getMessageList().item(id).getAttributes().getNamedItem("href").getNodeValue();
+	}
+	
+	public int getNumberOfMessages() {
+		if (mMessageList == null) {
+			updateMessages();
+		}
+		if (mMessageList == null) {
+			return 0;
+		} else {
+			return getMessageList().getLength();
+		}
 	}
 	
 }
