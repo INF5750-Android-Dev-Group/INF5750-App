@@ -3,8 +3,8 @@ package no.uio.inf5750.assignment3.interpretation;
 import java.util.ArrayList;
 
 import org.w3c.dom.Document;
+
 import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import no.uio.inf5750.assignment3.ConnectionManager;
@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -173,7 +174,6 @@ public class InterpretationActivity extends Activity {
 		mButtonAddInterpretation = (Button) findViewById(R.id.interpretation_btnAdd);
 		mButtonAddInterpretation.setOnClickListener(new OnClickListener() 
 		{	
-			@Override
 			public void onClick(View v) 
 			{
 				// TODO Auto-generated method stub
@@ -182,7 +182,6 @@ public class InterpretationActivity extends Activity {
 		mButtonRefresh = (Button) findViewById(R.id.interpretation_btnRefresh);
 		mButtonRefresh.setOnClickListener(new OnClickListener() 
 		{	
-			@Override
 			public void onClick(View v) 
 			{
 				// TODO Auto-generated method stub
