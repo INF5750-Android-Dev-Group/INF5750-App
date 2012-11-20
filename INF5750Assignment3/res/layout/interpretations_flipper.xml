@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/Blue"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+    <TextView
+        android:id="@+id/txtInterpretationView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/interpretation_header"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Spinner
+        android:id="@+id/interpretations_spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <ViewFlipper
+        android:id="@+id/interpretations_flipper"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dip" >
+
+        <ScrollView 
+            xmlns:android="http://schemas.android.com/apk/res/android"
+    		android:layout_width="fill_parent" 
+    		android:layout_height="wrap_content">
+	        
+	        <LinearLayout
+	            android:id="@+id/interpretations_flipperpage1"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content" >
+	
+	            <TextView
+	                android:id="@+id/textView1"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="Side1"
+	                android:textAppearance="?android:attr/textAppearanceLarge" />
+	
+	            <LinearLayout
+	                android:id="@+id/interpretations_imageContainer1"
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="vertical" />
+	
+	            <LinearLayout
+	                android:id="@+id/interpretations_commentContainer1"
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="vertical" />
+	
+	        </LinearLayout>
+		</ScrollView>
+		
+        <ScrollView 
+            xmlns:android="http://schemas.android.com/apk/res/android"
+    		android:layout_width="fill_parent" 
+    		android:layout_height="wrap_content">
+	        
+	        <LinearLayout
+	            android:id="@+id/interpretations_flipperpage2"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content" >
+	
+	            <TextView
+	                android:id="@+id/textView2"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="side2"
+	                android:textAppearance="?android:attr/textAppearanceLarge" />
+	
+	            <LinearLayout
+	                android:id="@+id/interpretations_imageContainer2"
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="vertical" />
+	
+	            <LinearLayout
+	                android:id="@+id/interpretations_commentContainer2"
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="vertical" />
+	
+	        </LinearLayout>
+		</ScrollView>
+    </ViewFlipper>
+
+    <EditText
+        android:id="@+id/interpretation_editAddInterpretation"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text" />
+
+    <LinearLayout
+        android:id="@+id/layout_btnContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/interpretation_btnAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/addInterpretation" />
+
+        <Button
+            android:id="@+id/interpretation_btnRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btnGetInterpretedChart" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -12,7 +12,7 @@
     <string name="login_username">Username:</string>
     <string name="login_password">Password:</string>
     <string name="messaging">Messaging</string>
-    <string name="interpretation">Interpretation</string>
+    <string name="interpretation_header">Interpretation</string>
     <string name="btnGetInterpretedChart">Update</string>
     <string name="addInterpretation">Add</string>
     <string name="interpretation_textFieldName">Add Interpretation</string>
