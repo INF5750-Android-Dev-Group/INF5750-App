@@ -2,14 +2,16 @@ package no.uio.inf5750.assignment3;
 
 import java.util.HashMap;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
 public class UpdateDaemon {
 	private static UpdateDaemon mDaemon;
-	private NodeList mMessageList, mInterpretationList;
-	private HashMap<String, NodeList> mMessages, mInterpretations;
+	private JSONObject json;
 	private int mUnread;
 	
 	static {
@@ -21,97 +23,95 @@ public class UpdateDaemon {
 	}
 	
 	private UpdateDaemon() {
-		mMessages = new HashMap<String, NodeList>();
-		mInterpretations = new HashMap<String, NodeList>();
+		json = null;
 	}
 	
 	public void update() {
-		updateMessages();
-		updateInterpretations();
-	}
-	
-	public void updateInterpretations() {
-		String messageList = ConnectionManager.getConnectionManager().doRequest("http://apps.dhis2.org/dev/api/interpretations.xml");
-		Document doc = Util.getDomElement(messageList);
-		NodeList list = doc.getChildNodes();
-		NodeList metadata = list.item(0).getChildNodes();
-		mInterpretationList = null;
-		for (int i = 0; i < metadata.getLength(); i++) {
-			if (metadata.item(i).getNodeName().equals("interpretations")) {
-				mInterpretationList = metadata.item(i).getChildNodes();
-			}
-		}
-	}
-	
-	public void updateMessages() {
-		
-		String messageList = ConnectionManager.getConnectionManager().doRequest("http://apps.dhis2.org/dev/api/messageConversations.xml");
-		Document doc = Util.getDomElement(messageList);
-		if(doc==null)
-			return;
-		NodeList list = doc.getChildNodes();
-		NodeList metadata = list.item(0).getChildNodes();
-		mMessageList = null;
+		String jsonContent = ConnectionManager.getConnectionManager().doRequest("http://apps.dhis2.org/dev/api/currentUser/inbox");
 		mUnread = 0;
-		for (int i = 0; i < metadata.getLength(); i++) {
-			if (metadata.item(i).getNodeName().equals("messageConversations")) {
-				mMessageList = metadata.item(i).getChildNodes();
-				for (int j = 0; j < mMessageList.getLength(); j++) {
-					NamedNodeMap map = mMessageList.item(j).getAttributes();
-					if ( map.getNamedItem("read").getNodeValue().equals("false") ) {
-						mUnread += 1;
-					}
-				}
-				break;
+		try {
+			json = new JSONObject(jsonContent);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			json = null;
+			e.printStackTrace();
+			return;
+		}
+		int numMsg = getNumberOfMessages();
+		for (int i = 0; i < numMsg; i++) {
+			if (!getBooleanProperty("messageConversations", i, "read")) {
+				mUnread++;
 			}
 		}
-	}
-	
-	public NodeList getMessageList() {
-		if (mMessageList == null) {
-			updateMessages();
-		}
-		return mMessageList;
-	}
-	
-	public NodeList getInterpretationList() {
-		if (mInterpretationList == null) {
-			updateInterpretations();
-		}
-		return mInterpretationList;
 	}
 	
 	public int getUnreadMessages() {
-		if (mMessageList == null) {
-			updateMessages();
+		if (json == null) {
+			update();
 		}
 		return mUnread;
 	}
 	
-	public NodeList getMessageContent(String id) {
-		NodeList ret = mMessages.get(id);
-		if (ret == null) {
-			
+	private Object getProperty(String array, int id, String property) {
+		
+		if (json == null) {
+			update();
+		}
+		Object ret;
+		try {
+			ret = json.getJSONArray(array).getJSONObject(id).get(property);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			ret = null;
+			e.printStackTrace();
 		}
 		return ret;
 	}
 	
+	public Boolean getBooleanProperty(String array, int id, String property) {
+		return (Boolean) getProperty(array, id, property);
+	}
+	
+	public String getStringProperty(String array, int id, String property) {
+		return (String) getProperty(array, id, property);
+	}
+	
 	public String getMessageName(int id) {
-		return getMessageList().item(id).getAttributes().getNamedItem("name").getNodeValue();
+		return getStringProperty("messageConversations", id, "name");
+	}
+	
+	// requires updating once the latest version of the json-stream is out
+	public String getMessageTitle(int id) {
+		return getStringProperty("messageConversations", id, "name");
 	}
 	
 	public String getMessageUrl(int id) {
-		return getMessageList().item(id).getAttributes().getNamedItem("href").getNodeValue();
+		if (json == null) {
+			update();
+		}
+		return "";
+	}
+	
+	public String getMessageUid(int id) {
+		return getStringProperty("messageConversations", id, "id");
 	}
 	
 	public int getNumberOfMessages() {
-		if (mMessageList == null) {
-			updateMessages();
+		if (json == null) {
+			update();
 		}
-		if (mMessageList == null) {
+		if (json == null) {
 			return 0;
 		} else {
-			return getMessageList().getLength();
+			int ret;
+			try {
+				ret = json.getJSONArray("messageConversations").length();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				ret = 0;
+				e.printStackTrace();
+			}
+			return ret;
 		}
 	}
 	

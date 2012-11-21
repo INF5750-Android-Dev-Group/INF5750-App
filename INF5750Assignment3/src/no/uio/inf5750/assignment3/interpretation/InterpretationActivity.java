@@ -86,13 +86,12 @@ public class InterpretationActivity extends Activity {
 	//Activity Methods\\
 	void update() {
 		//Contacts server to get current interpretations
-		UpdateDaemon.getDaemon().updateInterpretations();
+		UpdateDaemon.getDaemon().update();
 		
 		//Gets list from UpdateDaemon
-		NodeList interpretations = UpdateDaemon.getDaemon().getInterpretationList();
 		
 		//Testing
-		mNumberOfInterpretations = interpretations.getLength();
+		mNumberOfInterpretations = 1;
 		
 
 		//test = new TextView(null);

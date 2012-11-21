@@ -1,21 +1,22 @@
 package no.uio.inf5750.assignment3.messaging;
 
+import no.uio.inf5750.assignment3.ConnectionManager;
 import no.uio.inf5750.assignment3.R;
-import no.uio.inf5750.assignment3.interpretation.InterpretationActivity;
+import no.uio.inf5750.assignment3.UpdateDaemon;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MessageActivity extends Activity{
 	/** Called when the activity is first created. */
+	// Not sure if we'll need this
 	String mMessage = "";
+	int mIndex;
 	private Button buttonUnread;
 	private Button buttonRemove;
 	private Button buttonBack;
@@ -31,9 +32,11 @@ public class MessageActivity extends Activity{
 			Bundle extras = getIntent().getExtras();
 			if (extras != null) {
 				mMessage = extras.getString("message");
+				mIndex = extras.getInt("messageIndex");
 			}
 		} else {
 			mMessage = savedInstanceState.getString("message");
+			mIndex = savedInstanceState.getInt("messageIndex");
 		}
 		
 		//Add the buttons and their actions
@@ -126,8 +129,12 @@ public class MessageActivity extends Activity{
 	}
 	
 	public void showMessage() {
+		String messageContent = UpdateDaemon.getDaemon().getMessageName(mIndex);
+		String messageTitle = UpdateDaemon.getDaemon().getMessageTitle(mIndex);
 		TextView title = (TextView) findViewById(R.id.message_title);
-		title.setText(mMessage);
+		TextView content = (TextView) findViewById(R.id.message_content);
+		title.setText(messageTitle);
+		content.setText(messageContent);
 	}
 
 }
