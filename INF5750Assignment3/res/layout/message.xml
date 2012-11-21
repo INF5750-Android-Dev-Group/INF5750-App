@@ -67,6 +67,28 @@
         android:layout_height="0dip"
         android:layout_weight="0.68" >
     </ListView>
+    
+    <LinearLayout
+        android:id="@+id/reply_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        
+        
+       <EditText
+            android:id="@+id/reply_textbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textMultiLine" >
+        </EditText>
+        
+        <Button
+            android:id="@+id/message_reply_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/message_reply_button" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/separator_layout2"
@@ -78,7 +100,6 @@
             android:layout_width="fill_parent"
             android:layout_height="2dp"
             android:background="@android:color/darker_gray" />
-
     </LinearLayout>
     
    	<LinearLayout
