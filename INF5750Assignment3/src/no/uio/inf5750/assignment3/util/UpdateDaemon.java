@@ -70,7 +70,6 @@ public class UpdateDaemon {
 			addComments(inter.mCommentThread, "interpretation", i);
 			addInfoNode(inter.mInfo, i, "map");
 			addInfoNode(inter.mInfo, i, "chart");
-			System.out.println(inter.mInfo.size());
 			mInterpretations.add(inter);
 		}
 	}
