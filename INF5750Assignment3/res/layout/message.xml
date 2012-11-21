@@ -7,6 +7,42 @@
     android:padding="10dp" >
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/message_unread_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/message_unread_button" />
+
+        <Button
+            android:id="@+id/message_remove_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/message_remove_button" />
+
+        <Button
+            android:id="@+id/message_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/message_back_button" />
+    </LinearLayout>
+	
+    <LinearLayout
+        android:id="@+id/separator_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/darker_gray" />
+
+    </LinearLayout>
+    
+    <LinearLayout
         android:id="@+id/message_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -23,13 +59,49 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-
     </LinearLayout>
 
     <ListView
         android:id="@+id/message_listview"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="0dip"
+        android:layout_weight="0.68" >
     </ListView>
+
+    <LinearLayout
+        android:id="@+id/separator_layout2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/darker_gray" />
+
+    </LinearLayout>
+    
+   	<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/message_unread2_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/message_unread_button" />
+
+        <Button
+            android:id="@+id/message_remove2_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/message_remove_button" />
+
+        <Button
+            android:id="@+id/message_back2_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/message_back_button" />
+    </LinearLayout>
 
 </LinearLayout>
