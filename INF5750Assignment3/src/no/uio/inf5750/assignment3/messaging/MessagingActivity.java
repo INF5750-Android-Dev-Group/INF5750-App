@@ -1,7 +1,7 @@
 package no.uio.inf5750.assignment3.messaging;
 
 import no.uio.inf5750.assignment3.R;
-import no.uio.inf5750.assignment3.UpdateDaemon;
+import no.uio.inf5750.assignment3.util.UpdateDaemon;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -55,8 +55,8 @@ public class MessagingActivity extends Activity {
 		mMessageIDs = new String[numMessages];
 
 		for (int i = 0; i < numMessages; i++) {
-			values[i] = UpdateDaemon.getDaemon().getMessageName(i); 
-			mMessageIDs[i] = UpdateDaemon.getDaemon().getMessageUid(i);
+			values[i] = UpdateDaemon.getDaemon().getMessage(i).mTitle; 
+			mMessageIDs[i] = UpdateDaemon.getDaemon().getMessage(i).mId;
 		}
 
 		setListView(values);

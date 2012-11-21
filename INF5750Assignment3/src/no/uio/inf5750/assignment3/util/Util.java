@@ -1,4 +1,4 @@
-package no.uio.inf5750.assignment3;
+package no.uio.inf5750.assignment3.util;
 
 import java.io.IOException;
 import java.io.StringReader;

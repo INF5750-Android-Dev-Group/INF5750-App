@@ -11,8 +11,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import no.uio.inf5750.assignment3.UpdateDaemon;
 import no.uio.inf5750.assignment3.interpretation.InterpretationActivity;
+import no.uio.inf5750.assignment3.util.UpdateDaemon;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -137,7 +137,7 @@ public class MessageActivity extends Activity {
 
 	@SuppressWarnings("unchecked")
 	public void showMessage() {
-		String messageTitle = UpdateDaemon.getDaemon().getMessageTitle(mIndex);
+		String messageTitle = UpdateDaemon.getDaemon().getMessage(mIndex).mTitle;
 		TextView title = (TextView) findViewById(R.id.message_title);
 		title.setText(messageTitle);
 		LinkedHashMap<String, String> info = UpdateDaemon.getDaemon()
