@@ -3,8 +3,6 @@ package no.uio.inf5750.assignment3.dashboard;
 import no.uio.inf5750.assignment3.R;
 import no.uio.inf5750.assignment3.util.ConnectionManager;
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -18,15 +16,11 @@ public class DashboardActivity extends Activity {
 	
 	private ImageView mImageView1, mImageView2;
 
-	private Context mContext;
-
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-
-		mContext = this;
 
 		mImageView1 = (ImageView) findViewById(R.id.main_imageview1);
 		mImageView2 = (ImageView) findViewById(R.id.main_imageview2);
@@ -34,7 +28,6 @@ public class DashboardActivity extends Activity {
 		mProgressBar2 = (ProgressBar) findViewById(R.id.diagram_progress2);
 		
 		setImages();
-
 	}
 	
 	Drawable drawable1;

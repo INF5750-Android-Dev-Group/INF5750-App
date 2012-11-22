@@ -3,7 +3,6 @@ package no.uio.inf5750.assignment3;
 import no.uio.inf5750.assignment3.dashboard.DashboardActivity;
 import no.uio.inf5750.assignment3.interpretation.InterpretationActivity;
 import no.uio.inf5750.assignment3.messaging.MessagingActivity;
-import no.uio.inf5750.assignment3.util.ConnectionManager;
 import no.uio.inf5750.assignment3.util.UpdateDaemon;
 import android.app.Activity;
 import android.content.Context;
@@ -13,8 +12,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 

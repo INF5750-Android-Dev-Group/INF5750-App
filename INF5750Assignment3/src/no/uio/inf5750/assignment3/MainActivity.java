@@ -1,6 +1,5 @@
 package no.uio.inf5750.assignment3;
 
-import no.uio.inf5750.assignment3.dashboard.DashboardActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -35,7 +34,6 @@ public class MainActivity extends Activity {
 	class LoginOnClickListener implements OnClickListener {
 
 		public void onClick(View arg0) {
-			
 			
 			Intent intent = new Intent(mContext, MainMenu.class);
 			startActivity(intent);
