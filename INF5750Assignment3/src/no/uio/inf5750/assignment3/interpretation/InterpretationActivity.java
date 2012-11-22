@@ -7,10 +7,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
-import no.uio.inf5750.assignment3.ConnectionManager;
 import no.uio.inf5750.assignment3.R;
-import no.uio.inf5750.assignment3.UpdateDaemon;
-import no.uio.inf5750.assignment3.Util;
+import no.uio.inf5750.assignment3.util.ConnectionManager;
+import no.uio.inf5750.assignment3.util.UpdateDaemon;
+import no.uio.inf5750.assignment3.util.Util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -85,14 +85,12 @@ public class InterpretationActivity extends Activity {
 	//Activity Methods\\
 	void update() {
 		//Contacts server to get current interpretations
-		UpdateDaemon.getDaemon().updateInterpretations();
+		UpdateDaemon.getDaemon().update();
 		
 		//Gets list from UpdateDaemon
-		NodeList interpretations = UpdateDaemon.getDaemon().getInterpretationList();
 		
 		//Testing
-		mNumberOfInterpretations = interpretations.getLength();
-		
+		mNumberOfInterpretations = UpdateDaemon.getDaemon().getNumberOfInterpretations();
 
 		TextView test = new TextView(getApplicationContext());
 		test.setText("testning");

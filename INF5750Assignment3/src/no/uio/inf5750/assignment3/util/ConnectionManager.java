@@ -1,4 +1,4 @@
-package no.uio.inf5750.assignment3;
+package no.uio.inf5750.assignment3.util;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +16,7 @@ import android.graphics.drawable.Drawable;
 
 public class ConnectionManager {
 	private static ConnectionManager mManager = null;
-	private String mUsername, mPassword, mLog;
+	private String mUsername, mPassword, mLog, mSite;
 
 	static {
 		mManager =  new ConnectionManager();
@@ -27,6 +27,15 @@ public class ConnectionManager {
 		mUsername = "admin";
 		mPassword = "district";
 		mLog = "";
+		mSite = "http://apps.dhis2.org/dev/api/";
+	}
+	
+	public void setSite(String site) {
+		mSite = site;
+	}
+	
+	public String getSite() {
+		return mSite;
 	}
 
 	public static ConnectionManager getConnectionManager() 

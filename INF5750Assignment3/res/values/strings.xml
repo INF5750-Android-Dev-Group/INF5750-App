@@ -16,5 +16,9 @@
     <string name="btnGetInterpretedChart">Update</string>
     <string name="addInterpretation">Add</string>
     <string name="interpretation_textFieldName">Add Interpretation</string>
+    <string name="message_unread_button">Mark as unread</string>
+    <string name="message_remove_button">Remove</string>
+    <string name="message_back_button">Back</string>
+    <string name="message_reply_button">Reply</string>
 
 </resources>

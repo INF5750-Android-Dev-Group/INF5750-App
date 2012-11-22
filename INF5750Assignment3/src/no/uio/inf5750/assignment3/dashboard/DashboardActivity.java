@@ -1,10 +1,10 @@
 package no.uio.inf5750.assignment3.dashboard;
 
-import no.uio.inf5750.assignment3.ConnectionManager;
 import no.uio.inf5750.assignment3.R;
-import no.uio.inf5750.assignment3.UpdateDaemon;
 import no.uio.inf5750.assignment3.interpretation.InterpretationActivity;
 import no.uio.inf5750.assignment3.messaging.MessagingActivity;
+import no.uio.inf5750.assignment3.util.ConnectionManager;
+import no.uio.inf5750.assignment3.util.UpdateDaemon;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
