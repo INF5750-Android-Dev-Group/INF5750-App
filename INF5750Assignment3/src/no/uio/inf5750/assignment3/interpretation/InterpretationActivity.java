@@ -14,6 +14,7 @@ import no.uio.inf5750.assignment3.Util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Path.FillType;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,8 +39,6 @@ public class InterpretationActivity extends Activity {
 	private ImageView mImageContainer;
 	private EditText mEditTextInterpretation;
 	private Button mButtonAddInterpretation, mButtonRefresh;
-	
-	private TextView test;
 	
 	private float mPrevXtouchValue;
 	private int mCurrentInterpretation;
@@ -95,9 +94,11 @@ public class InterpretationActivity extends Activity {
 		mNumberOfInterpretations = interpretations.getLength();
 		
 
-		//test = new TextView(null);
-		//mLayoutInterpretations.addView(test);
-		//test.setText(mNumberOfInterpretations);
+		TextView test = new TextView(getApplicationContext());
+		test.setText("testning");
+		test.setWidth(LinearLayout.LayoutParams.FILL_PARENT);
+		test.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+		mLayoutInterpretations.addView(test, 0);
 		
 		
 		/*
@@ -167,9 +168,8 @@ public class InterpretationActivity extends Activity {
 	void setActivityObjects()
 	{		
 		mSpnInterpretationList = (Spinner) findViewById(R.id.interpretations_spinner);
-		mViewFlipper = (ViewFlipper) findViewById(R.id.interpretations_flipper);
-		mLayoutChart = (LinearLayout) findViewById(R.id.interpretations_imageContainer1);
-		mLayoutInterpretations = (LinearLayout) findViewById(R.id.interpretations_commentContainer1);
+		mLayoutChart = (LinearLayout) findViewById(R.id.interpretations_imageContainer);
+		mLayoutInterpretations = (LinearLayout) findViewById(R.id.interpretations_commentContainer);
 		mEditTextInterpretation = (EditText) findViewById(R.id.interpretation_editAddInterpretation);
 		mButtonAddInterpretation = (Button) findViewById(R.id.interpretation_btnAdd);
 		mButtonAddInterpretation.setOnClickListener(new OnClickListener() 
