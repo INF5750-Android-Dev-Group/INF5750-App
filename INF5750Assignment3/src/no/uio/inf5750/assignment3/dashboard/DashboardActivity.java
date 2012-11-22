@@ -1,33 +1,24 @@
 package no.uio.inf5750.assignment3.dashboard;
 
 import no.uio.inf5750.assignment3.R;
-import no.uio.inf5750.assignment3.interpretation.InterpretationActivity;
-import no.uio.inf5750.assignment3.messaging.MessagingActivity;
 import no.uio.inf5750.assignment3.util.ConnectionManager;
-import no.uio.inf5750.assignment3.util.UpdateDaemon;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 public class DashboardActivity extends Activity {
 
-	private ProgressDialog mProgressDialog;
-	
-	private Button mButtonMessaging;
-	private Button mButtonInterpretation;
+	//private ProgressDialog mProgressDialog;
+	private ProgressBar mProgressBar1, mProgressBar2;
 	
 	private ImageView mImageView1, mImageView2;
 
 	private Context mContext;
-
-	private String mOutput;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -35,25 +26,14 @@ public class DashboardActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		//Look in res/layout/ for the layout definitions.
-
 		mContext = this;
-
-		setButtons();
-
-		mOutput = "";
 
 		mImageView1 = (ImageView) findViewById(R.id.main_imageview1);
 		mImageView2 = (ImageView) findViewById(R.id.main_imageview2);
+		mProgressBar1 = (ProgressBar) findViewById(R.id.diagram_progress1);
+		mProgressBar2 = (ProgressBar) findViewById(R.id.diagram_progress2);
 		
 		setImages();
-
-		
-		//Old data fetching stuff..
-		//String response = ConnectionManager.getConnectionManager().doRequest("http://apps.dhis2.org/dev/api/interpretations/cjG99uolq7c.xml");
-		//String response = ConnectionManager.getConnectionManager().doRequest("http://apps.dhis2.org/dev/api/messageConversations.xml");	
-		//print(response);
-		//print(ConnectionManager.getConnectionManager().getLog());
 
 	}
 	
@@ -61,79 +41,55 @@ public class DashboardActivity extends Activity {
 	Drawable drawable2;
 	public void setImages()
 	{ //fetching data in a thread for making things appear smoother
-		
-		mProgressDialog = ProgressDialog.show(mContext, "Loading", "Please wait..");
-		
-		final Thread setImageThread = new Thread(){
-			
+
+		final Thread setImageThread1 = new Thread(){
 			public void run()
-			{
-				updateButtons();
-				
+			{//Separate thread to be run on UI bc android demands that
 				if(drawable1!=null)
+				{
 		        	mImageView1.setImageDrawable(drawable1);
-		        
+				}
+				else
+				{
+					mImageView1.setImageDrawable(getResources().getDrawable(R.drawable.notfound));
+				}
+				mImageView1.setVisibility(View.VISIBLE);
+	        	mProgressBar1.setVisibility(View.INVISIBLE);
+			}
+		};
+		final Thread setImageThread2 = new Thread(){
+			public void run()
+			{//Separate thread to be run on UI bc android demands that
 		        if(drawable2!=null)
+		        {
 		        	mImageView2.setImageDrawable(drawable2);
-		        
-		        if(mProgressDialog!=null)
-		        	mProgressDialog.dismiss();
+		        }
+		        else
+				{
+					mImageView2.setImageDrawable(getResources().getDrawable(R.drawable.notfound));
+				}
+				mImageView2.setVisibility(View.VISIBLE);
+	        	mProgressBar2.setVisibility(View.INVISIBLE);
 			}
 		};
 
-		
-		Thread getImageThread = new Thread()
+		//Fetching images in separate threads
+		new Thread()
 		{
 			public void run()
 			{
-				UpdateDaemon.getDaemon().update();
 				drawable1 = ConnectionManager.getConnectionManager().getImage("http://apps.dhis2.org/demo/api/charts/EbRN2VIbPdV/data");
-				drawable2 = ConnectionManager.getConnectionManager().getImage("http://apps.dhis2.org/demo/api/charts/CiooTWsT3AP/data");
-		        
-				runOnUiThread(setImageThread);
+				runOnUiThread(setImageThread1);
 			}
-		};
-		getImageThread.start();	
+		}.start();
+		new Thread()
+		{
+			public void run()
+			{
+				drawable2 = ConnectionManager.getConnectionManager().getImage("http://apps.dhis2.org/demo/api/charts/MHKr9RGieUL/data");
+		        runOnUiThread(setImageThread2);
+			}
+		}.start();	
 		
 	}
-	
-	public void updateButtons()
-	{
-		mButtonMessaging.setText(getString(R.string.launch_messaging) + " (" + UpdateDaemon.getDaemon().getUnreadMessages() + ")");
-	}
-
-	public void setButtons()
-	{
-		
-		mButtonMessaging = (Button) findViewById(R.id.main_button_messaging);
-		mButtonInterpretation = (Button) findViewById(R.id.main_button_interpretation);
-		mButtonMessaging.setText(getString(R.string.launch_messaging));
-		mButtonMessaging.setOnClickListener(new OnClickListener(){
-
-			public void onClick(View v) {
-
-				Intent intent = new Intent(mContext, MessagingActivity.class);
-				startActivity(intent);
-
-			}
-
-		});
-		
-		mButtonInterpretation.setOnClickListener(new OnClickListener(){
-
-			public void onClick(View v) {
-
-				Intent intent = new Intent(mContext, InterpretationActivity.class);
-				startActivity(intent);
-
-			}
-
-		});
-	}
-	
-	/*public void print(String output)
-	{
-		mOutput += output + "\n\n";
-		mTextView.setText(mOutput);
-	}*/
 }

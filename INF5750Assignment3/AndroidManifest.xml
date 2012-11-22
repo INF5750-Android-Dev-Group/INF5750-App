@@ -21,6 +21,10 @@
             </intent-filter>
         </activity>
         
+        <activity 	android:name=".MainMenu" 
+        			android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        </activity>
+        
         <activity 	android:name=".dashboard.DashboardActivity" 
         			android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>

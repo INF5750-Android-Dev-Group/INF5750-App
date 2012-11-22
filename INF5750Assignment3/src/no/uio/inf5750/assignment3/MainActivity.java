@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
 		public void onClick(View arg0) {
 			
 			
-			Intent intent = new Intent(mContext, DashboardActivity.class);
+			Intent intent = new Intent(mContext, MainMenu.class);
 			startActivity(intent);
 			
 			mActivity.finish();
