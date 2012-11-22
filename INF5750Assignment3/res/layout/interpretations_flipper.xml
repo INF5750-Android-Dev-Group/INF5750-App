@@ -17,77 +17,38 @@
         android:id="@+id/interpretations_spinner"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+    
+       <ScrollView 
+           xmlns:android="http://schemas.android.com/apk/res/android"
+   		android:layout_width="fill_parent" 
+   		android:layout_height="wrap_content">
+        
+        <LinearLayout
+            android:id="@+id/interpretations_flipperpage1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
 
-    <ViewFlipper
-        android:id="@+id/interpretations_flipper"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="6dip" >
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Side1"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <ScrollView 
-            xmlns:android="http://schemas.android.com/apk/res/android"
-    		android:layout_width="fill_parent" 
-    		android:layout_height="wrap_content">
-	        
-	        <LinearLayout
-	            android:id="@+id/interpretations_flipperpage1"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content" >
-	
-	            <TextView
-	                android:id="@+id/textView1"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:text="Side1"
-	                android:textAppearance="?android:attr/textAppearanceLarge" />
-	
-	            <LinearLayout
-	                android:id="@+id/interpretations_imageContainer1"
-	                android:layout_width="fill_parent"
-	                android:layout_height="wrap_content"
-	                android:orientation="vertical" />
-	
-	            <LinearLayout
-	                android:id="@+id/interpretations_commentContainer1"
-	                android:layout_width="fill_parent"
-	                android:layout_height="wrap_content"
-	                android:orientation="vertical" />
-	
-	        </LinearLayout>
-		</ScrollView>
-		
-        <ScrollView 
-            xmlns:android="http://schemas.android.com/apk/res/android"
-    		android:layout_width="fill_parent" 
-    		android:layout_height="wrap_content">
-	        
-	        <LinearLayout
-	            android:id="@+id/interpretations_flipperpage2"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content" >
-	
-	            <TextView
-	                android:id="@+id/textView2"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:text="side2"
-	                android:textAppearance="?android:attr/textAppearanceLarge" />
-	
-	            <LinearLayout
-	                android:id="@+id/interpretations_imageContainer2"
-	                android:layout_width="fill_parent"
-	                android:layout_height="wrap_content"
-	                android:orientation="vertical" />
-	
-	            <LinearLayout
-	                android:id="@+id/interpretations_commentContainer2"
-	                android:layout_width="fill_parent"
-	                android:layout_height="wrap_content"
-	                android:orientation="vertical" />
-	
-	        </LinearLayout>
-		</ScrollView>
-    </ViewFlipper>
+            <LinearLayout
+                android:id="@+id/interpretations_imageContainer"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <LinearLayout
+                android:id="@+id/interpretations_commentContainer"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+	</ScrollView>
 
     <EditText
         android:id="@+id/interpretation_editAddInterpretation"
