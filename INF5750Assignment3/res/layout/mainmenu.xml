@@ -6,7 +6,11 @@
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="5dp" >
-
+
+
+
+
+
     <TextView
         android:id="@+id/mainmenu_textview"
         android:layout_width="wrap_content"
@@ -15,7 +19,9 @@
         android:layout_marginBottom="20dp"
         android:text="@string/mainmenu_headerlabel"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
+
+
+
     <ListView
         android:id="@+id/mainmenu_listview"
         android:layout_width="fill_parent"

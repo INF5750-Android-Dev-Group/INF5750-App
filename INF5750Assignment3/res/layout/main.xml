@@ -6,13 +6,37 @@
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="5dp" >
-
+
+
+    <LinearLayout
+        android:id="@+id/layout_btnContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/dashboard_btnPrevPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dashboard_prevpage" />
+
+        <Button
+            android:id="@+id/dashboard_btnNextPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dashboard_nextpage" />
+
+    </LinearLayout>
+    
     <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp" >
-        
+        
+
+
+
         <ImageView
             android:id="@+id/main_imageview1"
             android:layout_width="wrap_content"
@@ -20,7 +44,8 @@
             android:adjustViewBounds="true"
             android:src="@drawable/placeholder"
             android:visibility="invisible" />
-
+
+
         <ProgressBar
             android:id="@+id/diagram_progress1"
             style="?android:attr/progressBarStyleLarge"
@@ -30,13 +55,16 @@
             android:layout_centerVertical="true" />
 
     </RelativeLayout>
-
+
+
+
     
     <RelativeLayout
         android:id="@+id/relativeLayout2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
-        
+        
+
         <ImageView
             android:id="@+id/main_imageview2"
             android:layout_width="wrap_content"
@@ -44,7 +72,9 @@
             android:adjustViewBounds="true"
             android:src="@drawable/placeholder"
             android:visibility="invisible" />
-
+
+
+
         <ProgressBar
             android:id="@+id/diagram_progress2"
             style="?android:attr/progressBarStyleLarge"

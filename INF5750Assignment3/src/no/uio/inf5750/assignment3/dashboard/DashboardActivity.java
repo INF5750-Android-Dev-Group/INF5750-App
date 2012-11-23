@@ -1,11 +1,19 @@
 package no.uio.inf5750.assignment3.dashboard;
 
+import java.io.ByteArrayOutputStream;
+
 import no.uio.inf5750.assignment3.R;
 import no.uio.inf5750.assignment3.util.ConnectionManager;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -15,6 +23,8 @@ public class DashboardActivity extends Activity {
 	private ProgressBar mProgressBar1, mProgressBar2;
 	
 	private ImageView mImageView1, mImageView2;
+	private Button mButtonPrevPage, mButtonNextPage;
+	private Context mContext;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -22,12 +32,34 @@ public class DashboardActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
+		mContext = this;
+		mButtonPrevPage = (Button) findViewById(R.id.dashboard_btnPrevPage);
+		mButtonNextPage = (Button) findViewById(R.id.dashboard_btnNextPage);
 		mImageView1 = (ImageView) findViewById(R.id.main_imageview1);
 		mImageView2 = (ImageView) findViewById(R.id.main_imageview2);
 		mProgressBar1 = (ProgressBar) findViewById(R.id.diagram_progress1);
 		mProgressBar2 = (ProgressBar) findViewById(R.id.diagram_progress2);
 		
+		setButtons();
 		setImages();
+	}
+	
+	public void setButtons() {
+		mButtonPrevPage.setOnClickListener(new OnClickListener() 
+		{	
+			public void onClick(View v) 
+			{
+				// TODO Auto-generated method stub
+			}
+		});
+
+		mButtonNextPage.setOnClickListener(new OnClickListener() 
+		{	
+			public void onClick(View v) 
+			{
+				// TODO Auto-generated method stub
+			}
+		});
 	}
 	
 	Drawable drawable1;
@@ -82,7 +114,37 @@ public class DashboardActivity extends Activity {
 				drawable2 = ConnectionManager.getConnectionManager().getImage("http://apps.dhis2.org/demo/api/charts/MHKr9RGieUL/data");
 		        runOnUiThread(setImageThread2);
 			}
-		}.start();	
+		}.start();
 		
+		mImageView1.setOnClickListener(new OnClickListener() 
+		{	
+			public void onClick(View v) 
+			{
+				launchChartActivity(drawable1);
+			}
+		});
+
+		mImageView2.setOnClickListener(new OnClickListener() 
+		{	
+			public void onClick(View v) 
+			{
+				launchChartActivity(drawable2);
+			}
+		});
+		
+	}
+	
+
+	public void launchChartActivity(Drawable image)
+	{
+		// Convert to byte array for sending through Extras.
+		Bitmap bmp = ((BitmapDrawable) image).getBitmap();
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		bmp.compress(Bitmap.CompressFormat.PNG, 100, bos); // NOTE: THIS ASSUMES PNGs!
+		byte[] imageBytes = bos.toByteArray();
+
+		Intent intent = new Intent(this, DashboardChartActivity.class);
+		startActivity(intent);
+		intent.putExtra("dashboard_chart", imageBytes);
 	}
 }
