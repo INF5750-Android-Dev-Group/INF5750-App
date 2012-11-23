@@ -1,27 +1,19 @@
 package no.uio.inf5750.assignment3.messaging;
+
 import no.uio.inf5750.assignment3.R;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import no.uio.inf5750.assignment3.interpretation.InterpretationActivity;
 import no.uio.inf5750.assignment3.util.UpdateDaemon;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,9 +24,7 @@ public class MessageActivity extends Activity {
 	String mMessage = "";
 	int mIndex;
 	private Button buttonRemove;
-	private Button buttonRemove2;
 	private Button buttonUnread;
-	private Button buttonUnread2;
 	private Button buttonReply;
 
 	@Override
@@ -62,15 +52,11 @@ public class MessageActivity extends Activity {
 		// Create button by id
 		buttonUnread = (Button) findViewById(R.id.message_unread_button);
 		buttonRemove = (Button) findViewById(R.id.message_remove_button);
-		buttonUnread2 = (Button) findViewById(R.id.message_unread2_button);
-		buttonRemove2 = (Button) findViewById(R.id.message_remove2_button);
 		buttonReply = (Button) findViewById(R.id.message_reply_button);
 
 		// Set text
 		buttonUnread.setText(getString(R.string.message_unread_button));
 		buttonRemove.setText(getString(R.string.message_remove_button));
-		buttonUnread2.setText(getString(R.string.message_unread_button));
-		buttonRemove2.setText(getString(R.string.message_remove_button));
 		buttonReply.setText(getString(R.string.message_reply_button));
 
 		// Set onclicklistener
@@ -78,7 +64,9 @@ public class MessageActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				unread();
+				Toast toast = Toast.makeText(MessageActivity.this,
+						"Mark message as unread", Toast.LENGTH_LONG);
+				toast.show();
 			}
 		});
 
@@ -86,23 +74,9 @@ public class MessageActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				remove();
-			}
-		});
-
-		buttonUnread2.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				unread();
-			}
-		});
-
-		buttonRemove2.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				remove();
+				Toast toast = Toast.makeText(MessageActivity.this, "Remove message",
+						Toast.LENGTH_LONG);
+				toast.show();
 			}
 		});
 
@@ -115,24 +89,6 @@ public class MessageActivity extends Activity {
 				toast.show();
 			}
 		});
-	}
-
-	public void unread() {
-		Toast toast = Toast.makeText(MessageActivity.this,
-				"Mark message as unread", Toast.LENGTH_LONG);
-		toast.show();
-	}
-
-	public void remove() {
-		Toast toast = Toast.makeText(MessageActivity.this, "Remove message",
-				Toast.LENGTH_LONG);
-		toast.show();
-	}
-
-	public void back() {
-		Intent intent = new Intent(MessageActivity.this,
-				MessagingActivity.class);
-		startActivity(intent);
 	}
 
 	@SuppressWarnings("unchecked")
