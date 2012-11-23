@@ -24,7 +24,6 @@ public class DashboardActivity extends Activity {
 	
 	private ImageView mImageView1, mImageView2;
 	private Button mButtonPrevPage, mButtonNextPage;
-	private Context mContext;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -32,7 +31,6 @@ public class DashboardActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		mContext = this;
 		mButtonPrevPage = (Button) findViewById(R.id.dashboard_btnPrevPage);
 		mButtonNextPage = (Button) findViewById(R.id.dashboard_btnNextPage);
 		mImageView1 = (ImageView) findViewById(R.id.main_imageview1);
@@ -144,7 +142,7 @@ public class DashboardActivity extends Activity {
 		byte[] imageBytes = bos.toByteArray();
 
 		Intent intent = new Intent(this, DashboardChartActivity.class);
-		startActivity(intent);
 		intent.putExtra("dashboard_chart", imageBytes);
+		startActivity(intent);
 	}
 }

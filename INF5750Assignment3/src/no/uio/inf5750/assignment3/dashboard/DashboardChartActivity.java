@@ -29,7 +29,7 @@ public class DashboardChartActivity extends Activity {
 
 		mImageView = (ImageView) findViewById(R.id.dashboardchart_imageview);
 		mProgressBar = (ProgressBar) findViewById(R.id.dashboardchart_progress);
-		
+
 		setImage();
 	}
 	
