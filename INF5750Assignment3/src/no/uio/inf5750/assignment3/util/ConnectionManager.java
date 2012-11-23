@@ -57,6 +57,18 @@ public class ConnectionManager {
 	{
 		mPassword = password;
 	}
+	
+	public void replyMessage(String msgId, String message) {
+		// TODO
+	}
+	
+	public void sendNewMessage(String personId, String title, String message) {
+		// TODO
+	}
+	
+	public void replyInterpretation(String interId, String message) {
+		// TODO
+	}
 
 	public Drawable getImage(String url)
 	{
