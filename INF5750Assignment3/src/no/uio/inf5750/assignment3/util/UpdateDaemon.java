@@ -156,12 +156,12 @@ public class UpdateDaemon {
 		return mInterpretations.get(id);
 	}
 	
-	public Message[] getMessages() {
-		return (Message[]) mMessages.toArray();
+	public LinkedList<Message> getMessages() {
+		return (LinkedList<Message>) mMessages.clone();
 	}
 	
-	public Interpretation[] getInterpretations() {
-		return (Interpretation[]) mInterpretations.toArray();
+	public LinkedList<Interpretation> getInterpretations() {
+		return (LinkedList<Interpretation>) mInterpretations.clone();
 	}
 	
 	public int getUnreadMessages() {
