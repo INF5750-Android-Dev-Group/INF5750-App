@@ -14,9 +14,11 @@ import no.uio.inf5750.assignment3.util.UpdateDaemon;
 import no.uio.inf5750.assignment3.util.Util;
 import no.uio.inf5750.assignment3.util.Interpretation;
 import android.app.Activity;
+import android.content.pm.ApplicationInfo;
 
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -75,7 +77,7 @@ public class InterpretationActivity extends Activity {
 	}
 	
 	//Activity Methods\\
-	void update() {
+	private void update() {
 		//Contacts server to get current interpretations
 		UpdateDaemon.getDaemon().update();
 		
@@ -96,12 +98,19 @@ public class InterpretationActivity extends Activity {
 			}
 		}
 		
+		//TODO - Simen spinner fiks
 		ArrayAdapter<String> mSpnAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mInterpretationNameList);
 		mSpnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mSpnInterpretationList.setAdapter(mSpnAdapter);
+			
+		//Creates a TextView that shows interpretation
+		//showInitialInterpretation(mCurrentInterpretation);
 		
-		//Creates a 
+		//Creates a TextView for each comment and adds it into the layout
+		showComments(mCurrentInterpretation);
 		
+		//Load image/chart into the placeholder
+		//showChart(mCurrentInterpretation);
 		
 		//text = mInterpretationList[0].mId;
 		
@@ -150,12 +159,26 @@ public class InterpretationActivity extends Activity {
 		*/
 	}
 	
-	void refresh()
+	private void showInitialInterpretation(int interpretation)
 	{
 		
 	}
 	
-	void addImageToView(String url, int imageView) {
+	private void showComments(int interNr)
+	{
+		mLayoutInterpretations.removeAllViews();
+		
+		for(int i = 0; i < mInterpretationList.get(interNr).mCommentThread.size(); i++)
+		{
+			TextView tempView = new TextView(this);
+			tempView.setText(mInterpretationList.get(interNr).mCommentThread.get(i).mText);
+			mLayoutInterpretations.addView(tempView);
+			Log.d("Testing", mInterpretationList.get(interNr).mCommentThread.get(i).mText);
+		}
+	}
+	
+	private void showChart(String url, int imageView)
+	{
 		String interpretation = ConnectionManager.getConnectionManager().doRequest(url + ".xml");
 		NodeList nodes = Util.getDomElement(interpretation).getChildNodes().item(0).getChildNodes();
 		
@@ -169,8 +192,6 @@ public class InterpretationActivity extends Activity {
 				
 			}
 		}
-		
-		
 	}
 
 	void setActivityObjects()

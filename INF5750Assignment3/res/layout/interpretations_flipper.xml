@@ -18,54 +18,48 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
     
+     <ImageView
+        android:id="@+id/interpretations_imageContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@+string/PlaceholderImage"
+        android:adjustViewBounds="true"
+        android:src="@drawable/placeholder" />
+    
 	<ScrollView 
         xmlns:android="http://schemas.android.com/apk/res/android"
    		android:layout_width="fill_parent" 
    		android:layout_height="wrap_content">
         
         <LinearLayout
-            android:id="@+id/interpretations_flipperpage1"
+            android:id="@+id/interpretations_commentContainer"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
-
-            <ImageView
-		        android:id="@+id/interpretations_imageContainer"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:adjustViewBounds="true"
-		        android:src="@drawable/placeholder" />
-
-            <LinearLayout
-                android:id="@+id/interpretations_commentContainer"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-		
-            <EditText
-		        android:id="@+id/interpretation_editAddInterpretation"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:ems="10"
-		        android:inputType="text" />
-		
-			<LinearLayout
-		        android:id="@+id/layout_btnContainer"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:orientation="horizontal" >
-		
-		        <Button
-		            android:id="@+id/interpretation_btnAdd"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="@string/addInterpretation" />
-		
-		        <Button
-		            android:id="@+id/interpretation_btnRefresh"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="@string/btnGetInterpretedChart" />
-		    </LinearLayout>
-        </LinearLayout>
+            android:layout_height="wrap_content" />
 	</ScrollView>
+	
+	<EditText
+        android:id="@+id/interpretation_editAddInterpretation"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text" />
+
+	<LinearLayout
+        android:id="@+id/layout_btnContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/interpretation_btnAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/addInterpretation" />
+
+        <Button
+            android:id="@+id/interpretation_btnRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btnGetInterpretedChart" />
+    </LinearLayout>
 </LinearLayout>
