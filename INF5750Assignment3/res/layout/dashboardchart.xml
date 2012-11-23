@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+	
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp" >
+
+	    <ImageView
+	        android:id="@+id/dashboardchart_imageview"
+	        android:contentDescription="@string/dashboardchart_chartcontent"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:scaleType="matrix"
+	        android:src="@drawable/placeholder"
+	        android:visibility="invisible" />
+
+        <ProgressBar
+            android:id="@+id/dashboardchart_progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+   
+    <LinearLayout
+        android:id="@+id/layout_btnContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom" >
+
+        <Button
+            android:id="@+id/dashboardchart_btnShare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dashboardchart_share" />
+
+        <Button
+            android:id="@+id/dashboardchart_btnInsert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dashboardchart_insert" />
+
+        <Button
+            android:id="@+id/dashboardchart_btnClear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dashboardchart_clear" />
+
+    </LinearLayout>
+
+</FrameLayout>

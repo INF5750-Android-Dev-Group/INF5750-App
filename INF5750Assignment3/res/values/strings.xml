@@ -20,5 +20,12 @@
     <string name="message_remove_button">Remove</string>
     <string name="message_back_button">Back</string>
     <string name="message_reply_button">Reply</string>
+    <string name="mainmenu_headerlabel">Where do you want to go?</string>
+    <string name="dashboard_nextpage">Next</string>
+    <string name="dashboard_prevpage">Previous</string>
+    <string name="dashboardchart_chartcontent">Chart</string>
+    <string name="dashboardchart_clear">Clear</string>
+    <string name="dashboardchart_share">Share</string>
+    <string name="dashboardchart_insert">Insert</string>
 
 </resources>
