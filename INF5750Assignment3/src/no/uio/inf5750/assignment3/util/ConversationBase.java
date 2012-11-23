@@ -9,4 +9,5 @@ public abstract class ConversationBase {
 	public LinkedList<Comment> mCommentThread = new LinkedList<Comment>();
 	public String mId = "";
 	public String mLastUpdated = "";
+	public String mText = "";
 }

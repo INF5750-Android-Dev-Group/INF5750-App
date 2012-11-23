@@ -67,6 +67,7 @@ public class UpdateDaemon {
 			inter.mId = getInterpretationsId(i);
 			inter.mLastUpdated = getInterpretationsLastUpdated(i);
 			inter.mUser = addOrGetUser((JSONObject) getProperty("interpretations", i, "user"));
+			inter.mText = getInterpretationsText(i);
 			addComments(inter.mCommentThread, "interpretation", i);
 			addInfoNode(inter.mInfo, i, "map");
 			addInfoNode(inter.mInfo, i, "chart");
@@ -117,9 +118,9 @@ public class UpdateDaemon {
 				Comment tmp = new Comment();
 				tmp.mText = (String) jsonComments.getJSONObject(i).get("text");
 				tmp.mUser = addOrGetUser(jsonComments.getJSONObject(i).getJSONObject("user"));
-				tmp.mLastUpdated = (String) jsonComments.getJSONObject(i).getString("lastUpdated");
-				tmp.mCreated = (String) jsonComments.getJSONObject(i).getString("created");
-				tmp.mId = (String) jsonComments.getJSONObject(i).getString("id");
+				tmp.mLastUpdated = jsonComments.getJSONObject(i).getString("lastUpdated");
+				tmp.mCreated = jsonComments.getJSONObject(i).getString("created");
+				tmp.mId = jsonComments.getJSONObject(i).getString("id");
 				comments.add(tmp);
 			}
 		} catch (JSONException e) {
