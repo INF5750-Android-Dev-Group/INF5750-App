@@ -9,4 +9,7 @@ public class InterpretationInfoNode {
 	String getImageUrl() {
 		return ConnectionManager.getConnectionManager().getSite() + "charts/" + mId + "/data";
 	}
+	
+	//TODO
+	//Lag getChart/Image
 }

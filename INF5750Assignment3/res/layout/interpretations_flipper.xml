@@ -40,34 +40,32 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
-
+		
+            <EditText
+		        android:id="@+id/interpretation_editAddInterpretation"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:ems="10"
+		        android:inputType="text" />
+		
+			<LinearLayout
+		        android:id="@+id/layout_btnContainer"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal" >
+		
+		        <Button
+		            android:id="@+id/interpretation_btnAdd"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/addInterpretation" />
+		
+		        <Button
+		            android:id="@+id/interpretation_btnRefresh"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/btnGetInterpretedChart" />
+		    </LinearLayout>
         </LinearLayout>
 	</ScrollView>
-
-    <EditText
-        android:id="@+id/interpretation_editAddInterpretation"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text" />
-
-    <LinearLayout
-        android:id="@+id/layout_btnContainer"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/interpretation_btnAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/addInterpretation" />
-
-        <Button
-            android:id="@+id/interpretation_btnRefresh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btnGetInterpretedChart" />
-    </LinearLayout>
-
 </LinearLayout>

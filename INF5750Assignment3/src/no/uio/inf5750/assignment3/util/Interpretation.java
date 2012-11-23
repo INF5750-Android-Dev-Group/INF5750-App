@@ -4,5 +4,5 @@ import java.util.LinkedList;
 
 
 public class Interpretation extends ConversationBase {
-	LinkedList<InterpretationInfoNode> mInfo = new LinkedList<InterpretationInfoNode>();
+	public LinkedList<InterpretationInfoNode> mInfo = new LinkedList<InterpretationInfoNode>();
 }

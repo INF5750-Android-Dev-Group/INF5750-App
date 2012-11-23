@@ -76,37 +76,33 @@ public class InterpretationActivity extends Activity {
 	
 	//Activity Methods\\
 	void update() {
-		//Test
-		String text;
-		
 		//Contacts server to get current interpretations
 		UpdateDaemon.getDaemon().update();
 		
 		
 		//If there are no interpretations there is no need to do anything.
-		if(UpdateDaemon.getDaemon().getNumberOfInterpretations() < 1)
-		{
-			text = "ingen interpretations";
-		}
+		if(UpdateDaemon.getDaemon().getNumberOfInterpretations() < 1) return;
 		
 		
 		//Gets list off interpretations from UpdateDaemon
 		mInterpretationList = UpdateDaemon.getDaemon().getInterpretations();
-		
-		/*
+	
 		//Fills the spinner with the name of each dataset that has comments
-		mInterpretationNameList = new String[mInterpretationList.length];
-		for(int i = 0; i < mInterpretationList.length; i++){
-			
+		mInterpretationNameList = new String[mInterpretationList.size()];		
+		for(int i = 0; i < mInterpretationList.size(); i++)
+		{
+			if(!mInterpretationList.get(i).mInfo.isEmpty()) {
+				mInterpretationNameList[i] = mInterpretationList.get(i).mInfo.get(0).mName;
+			}
 		}
-		/*
+		
 		ArrayAdapter<String> mSpnAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mInterpretationNameList);
 		mSpnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mSpnInterpretationList.setAdapter(mSpnAdapter);
-		*/
 		
-		//Testing
-	
+		//Creates a 
+		
+		
 		//text = mInterpretationList[0].mId;
 		
 		//text = ConnectionManager.getConnectionManager().getSite() + "charts/" + text + "/name";
