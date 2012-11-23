@@ -24,5 +24,8 @@
     <string name="dashboard_nextpage">Next</string>
     <string name="dashboard_prevpage">Previous</string>
     <string name="dashboardchart_chartcontent">Chart</string>
+    <string name="dashboardchart_clear">Clear</string>
+    <string name="dashboardchart_share">Share</string>
+    <string name="dashboardchart_insert">Insert</string>
 
 </resources>

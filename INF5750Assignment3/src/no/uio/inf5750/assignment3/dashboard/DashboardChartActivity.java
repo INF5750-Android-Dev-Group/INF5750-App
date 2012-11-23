@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.util.FloatMath;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -19,6 +21,7 @@ public class DashboardChartActivity extends Activity {
 
 	private ProgressBar mProgressBar;	
 	private ImageView mImageView;
+	private Button mButtonShare, mButtonInsert, mButtonClear;
 	private Bundle extras;
 
 	/** Called when the activity is first created. */
@@ -29,12 +32,15 @@ public class DashboardChartActivity extends Activity {
 
 		mImageView = (ImageView) findViewById(R.id.dashboardchart_imageview);
 		mProgressBar = (ProgressBar) findViewById(R.id.dashboardchart_progress);
+		mButtonShare = (Button) findViewById(R.id.dashboardchart_btnShare);
+		mButtonInsert = (Button) findViewById(R.id.dashboardchart_btnInsert);
+		mButtonClear = (Button) findViewById(R.id.dashboardchart_btnClear);
 
+		setButtons();
 		setImage();
 	}
 	
 	Bitmap bmp;
-	
 	// For OnTouchListener:
 	Matrix mtx = new Matrix();
 	Matrix tempMtx = new Matrix();
@@ -44,7 +50,7 @@ public class DashboardChartActivity extends Activity {
 	static final int DRAGGING = 1;
 	static final int ZOOMING = 2;
 	private int state = PASSIVE;
-	public void setImage()
+	private void setImage()
 	{ 
 		final Thread setImageThread = new Thread(){
 			public void run()
@@ -133,6 +139,32 @@ public class DashboardChartActivity extends Activity {
 				float x = event.getX(0) + event.getX(1);
 				float y = event.getY(0) + event.getY(1);
 				p.set(x/2, y/2);
+			}
+		});
+	}
+	
+	private void setButtons() {
+		mButtonShare.setOnClickListener(new OnClickListener() 
+		{	
+			public void onClick(View v) 
+			{
+				// TODO Auto-generated method stub
+			}
+		});
+
+		mButtonInsert.setOnClickListener(new OnClickListener() 
+		{	
+			public void onClick(View v) 
+			{
+				// TODO Auto-generated method stub
+			}
+		});
+		
+		mButtonClear.setOnClickListener(new OnClickListener() 
+		{	
+			public void onClick(View v) 
+			{
+				// TODO Auto-generated method stub
 			}
 		});
 	}

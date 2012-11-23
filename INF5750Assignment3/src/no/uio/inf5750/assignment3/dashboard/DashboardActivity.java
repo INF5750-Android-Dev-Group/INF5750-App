@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import no.uio.inf5750.assignment3.R;
 import no.uio.inf5750.assignment3.util.ConnectionManager;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -42,7 +41,7 @@ public class DashboardActivity extends Activity {
 		setImages();
 	}
 	
-	public void setButtons() {
+	private void setButtons() {
 		mButtonPrevPage.setOnClickListener(new OnClickListener() 
 		{	
 			public void onClick(View v) 
@@ -62,7 +61,7 @@ public class DashboardActivity extends Activity {
 	
 	Drawable drawable1;
 	Drawable drawable2;
-	public void setImages()
+	private void setImages()
 	{ //fetching data in a thread for making things appear smoother
 
 		final Thread setImageThread1 = new Thread(){
