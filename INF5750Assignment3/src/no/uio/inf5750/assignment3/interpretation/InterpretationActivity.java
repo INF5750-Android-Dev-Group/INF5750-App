@@ -1,6 +1,7 @@
 package no.uio.inf5750.assignment3.interpretation;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import org.w3c.dom.Document;
 
@@ -11,40 +12,32 @@ import no.uio.inf5750.assignment3.R;
 import no.uio.inf5750.assignment3.util.ConnectionManager;
 import no.uio.inf5750.assignment3.util.UpdateDaemon;
 import no.uio.inf5750.assignment3.util.Util;
+import no.uio.inf5750.assignment3.util.Interpretation;
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Path.FillType;
+
 import android.os.Bundle;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 public class InterpretationActivity extends Activity {
 	private Spinner mSpnInterpretationList;
-	private ViewFlipper mViewFlipper;
-	private LinearLayout mLayoutChart, mLayoutInterpretations;
+	private LinearLayout mLayoutInterpretations;
 	private ImageView mImageContainer;
 	private EditText mEditTextInterpretation;
 	private Button mButtonAddInterpretation, mButtonRefresh;
 	
 	private float mPrevXtouchValue;
 	private int mCurrentInterpretation;
-	
-	String tester;
-	int mNumberOfInterpretations;
+	private LinkedList<Interpretation> mInterpretationList;
+	private String[] mInterpretationNameList;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +45,6 @@ public class InterpretationActivity extends Activity {
 		setContentView(R.layout.interpretations_flipper);
 		
 		//Initializes variables
-		mNumberOfInterpretations = 0;
 		mCurrentInterpretation = 0;
 		setActivityObjects();
 		
@@ -84,19 +76,43 @@ public class InterpretationActivity extends Activity {
 	
 	//Activity Methods\\
 	void update() {
+		//Test
+		String text;
+		
 		//Contacts server to get current interpretations
 		UpdateDaemon.getDaemon().update();
 		
-		//Gets list from UpdateDaemon
+		
+		//If there are no interpretations there is no need to do anything.
+		if(UpdateDaemon.getDaemon().getNumberOfInterpretations() < 1)
+		{
+			text = "ingen interpretations";
+		}
+		
+		
+		//Gets list off interpretations from UpdateDaemon
+		mInterpretationList = UpdateDaemon.getDaemon().getInterpretations();
+		
+		/*
+		//Fills the spinner with the name of each dataset that has comments
+		mInterpretationNameList = new String[mInterpretationList.length];
+		for(int i = 0; i < mInterpretationList.length; i++){
+			
+		}
+		/*
+		ArrayAdapter<String> mSpnAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mInterpretationNameList);
+		mSpnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		mSpnInterpretationList.setAdapter(mSpnAdapter);
+		*/
 		
 		//Testing
-		mNumberOfInterpretations = UpdateDaemon.getDaemon().getNumberOfInterpretations();
-
-		TextView test = new TextView(getApplicationContext());
-		test.setText("testning");
-		test.setWidth(LinearLayout.LayoutParams.FILL_PARENT);
-		test.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
-		mLayoutInterpretations.addView(test, 0);
+	
+		//text = mInterpretationList[0].mId;
+		
+		//text = ConnectionManager.getConnectionManager().getSite() + "charts/" + text + "/name";
+		
+		//TextView test = (TextView) findViewById(R.id.interpretationsTextView1);
+		//test.setText(text);
 		
 		
 		/*
@@ -149,12 +165,10 @@ public class InterpretationActivity extends Activity {
 		
 		for (int i = 0; i < nodes.getLength(); i++) {
 			if (nodes.item(i).getNodeName().equals("chart")) {
-				ImageView image = new ImageView(this);
-				image.setImageDrawable(ConnectionManager.getConnectionManager()
+				mImageContainer.setImageDrawable(ConnectionManager.getConnectionManager()
 						.getImage(nodes.item(i).getAttributes().getNamedItem("href").getNodeValue() 
 								+ "/data"));
 				
-				mLayoutChart.addView(image);
 				return;
 				
 			}
@@ -166,7 +180,7 @@ public class InterpretationActivity extends Activity {
 	void setActivityObjects()
 	{		
 		mSpnInterpretationList = (Spinner) findViewById(R.id.interpretations_spinner);
-		mLayoutChart = (LinearLayout) findViewById(R.id.interpretations_imageContainer);
+		mImageContainer = (ImageView) findViewById(R.id.interpretations_imageContainer);
 		mLayoutInterpretations = (LinearLayout) findViewById(R.id.interpretations_commentContainer);
 		mEditTextInterpretation = (EditText) findViewById(R.id.interpretation_editAddInterpretation);
 		mButtonAddInterpretation = (Button) findViewById(R.id.interpretation_btnAdd);
@@ -187,57 +201,5 @@ public class InterpretationActivity extends Activity {
 			}
 		});
 		
-	}
-	
-	//Sets the image and creates textViews for each comment
-	//dataSet used to define which interpretation it takes data from
-	void setData(int dataSet)
-	{
-		TextView tempText = null;
-		
-		if(mViewFlipper.getDisplayedChild() == 0)
-		{
-			//TODO
-			for(int i = 0; i < 1; i++) //Loop that goes through the list 
-			{
-				//Get comment text
-			}
-		}
-		else
-		{
-			
-		}
-	}
-	
-	@Override
-    public boolean onTouchEvent(MotionEvent touchevent) {
-        switch (touchevent.getAction())
-        {
-            case MotionEvent.ACTION_DOWN:
-            {
-            	mPrevXtouchValue = touchevent.getX();
-                break;
-            }
-            case MotionEvent.ACTION_UP:
-            {
-                float currentXtouchValue = touchevent.getX();
-                if (mPrevXtouchValue < currentXtouchValue)
-                {
-                	mViewFlipper.setInAnimation(this, R.anim.in_from_left);
-                	mViewFlipper.setOutAnimation(this, R.anim.out_to_right);
-                	mViewFlipper.showNext();
-                }
-                if (mPrevXtouchValue > currentXtouchValue)
-                {
-                    mViewFlipper.setInAnimation(this, R.anim.in_from_right);
-                    mViewFlipper.setOutAnimation(this, R.anim.out_to_left);
-                    mViewFlipper.showPrevious();
-                    
-                }
-                break;
-            }
-        }
-        return false;
-    }
-	
+	}	
 }
