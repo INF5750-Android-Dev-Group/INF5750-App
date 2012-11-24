@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 public class InterpretationActivity extends Activity {
 	private Spinner mSpnInterpretationList;
@@ -83,25 +85,53 @@ public class InterpretationActivity extends Activity {
 		
 		
 		//If there are no interpretations there is no need to do anything.
-		if(UpdateDaemon.getDaemon().getNumberOfInterpretations() < 1) return;
-		
-		
-		//Gets list off interpretations from UpdateDaemon
-		mInterpretationList = UpdateDaemon.getDaemon().getInterpretations();
-	
-		//Fills the spinner with the name of each dataset that has comments
-		mInterpretationNameList = new String[mInterpretationList.size()];		
-		for(int i = 0; i < mInterpretationList.size(); i++)
+		if(UpdateDaemon.getDaemon().getNumberOfInterpretations() < 1) 
 		{
-			if(!mInterpretationList.get(i).mInfo.isEmpty()) {
-				mInterpretationNameList[i] = mInterpretationList.get(i).mInfo.get(0).mName;
+			mInterpretationNameList = new String[]{"No interpretations.."};
+		}
+		else
+		{
+			//Gets list off interpretations from UpdateDaemon
+			mInterpretationList = UpdateDaemon.getDaemon().getInterpretations();
+		
+			//Fills the spinner with the name of each dataset that has comments
+					
+			LinkedList<String> tempList = new LinkedList<String>();
+			for(int i = 0; i < mInterpretationList.size(); i++)
+			{
+				if(!mInterpretationList.get(i).mInfo.isEmpty()) {
+					if(mInterpretationList.get(i).mInfo.get(0).mName == null)
+					{
+						System.out.println("its null");
+					}
+					else
+					{
+						tempList.add(mInterpretationList.get(i).mInfo.get(0).mName);
+					}
+				}
 			}
+			mInterpretationNameList = tempList.toArray(new String[tempList.size()]);
 		}
 		
-		//TODO - Simen spinner fiks
-		ArrayAdapter<String> mSpnAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mInterpretationNameList);
-		mSpnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		mSpnInterpretationList.setAdapter(mSpnAdapter);
+		ArrayAdapter<String> spinner_adapter = new ArrayAdapter<String>(this, R.layout.spinner_header, mInterpretationNameList);//ArrayAdapter.createFromResource(this, R.array.game_speeds, R.layout.spinner_header);
+    	spinner_adapter.setDropDownViewResource(R.layout.spinner_list_item);
+    	mSpnInterpretationList.setAdapter(spinner_adapter);
+    	mSpnInterpretationList.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+
+				mSpnInterpretationList.setSelection(arg2);
+				
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 			
 		//Creates a TextView that shows interpretation
 		//showInitialInterpretation(mCurrentInterpretation);

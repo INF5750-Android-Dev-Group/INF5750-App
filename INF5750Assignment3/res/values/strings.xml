@@ -27,5 +27,6 @@
     <string name="dashboardchart_clear">Clear</string>
     <string name="dashboardchart_share">Share</string>
     <string name="dashboardchart_insert">Insert</string>
+    <string name="replydialog_label">Reply</string>
 
 </resources>
