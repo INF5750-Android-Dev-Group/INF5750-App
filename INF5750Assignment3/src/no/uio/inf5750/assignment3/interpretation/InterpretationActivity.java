@@ -1,20 +1,11 @@
 package no.uio.inf5750.assignment3.interpretation;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-
-import org.w3c.dom.Document;
-
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.NodeList;
-
 import no.uio.inf5750.assignment3.R;
 import no.uio.inf5750.assignment3.util.ConnectionManager;
 import no.uio.inf5750.assignment3.util.UpdateDaemon;
-import no.uio.inf5750.assignment3.util.Util;
 import no.uio.inf5750.assignment3.util.Interpretation;
 import android.app.Activity;
-import android.content.pm.ApplicationInfo;
 import android.graphics.drawable.Drawable;
 
 import android.os.Bundle;
@@ -22,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,19 +21,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.ViewSwitcher;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 public class InterpretationActivity extends Activity {
 	private Spinner mSpnInterpretationList;
-	private ViewSwitcher mResourceSwitcher;
 	private LinearLayout mCommentsContainer, mResourceContainer;
-	private ImageView mImageContainer;
-	private TextView mInitialComment, mUserDateInfo, mResourceInformer;
+	private TextView mInitialComment, mUserDateInfo;
 	private EditText mEditTextInterpretation;
 	private Button mButtonAddInterpretation, mButtonRefresh;
 	
-	private float mPrevXtouchValue;
 	private int mCurrentInterpretation;
 	private LinkedList<Interpretation> mInterpretationList;
 	private String[] mInterpretationNameList;
@@ -63,37 +51,69 @@ public class InterpretationActivity extends Activity {
 	private void update() {
 		//Contacts server to get current interpretations
 		UpdateDaemon.getDaemon().update();
-		
-		//If there are no interpretations there is no need to do anything.
-		if(UpdateDaemon.getDaemon().getNumberOfInterpretations() < 1) return;
-		
-		//Gets list off interpretations from UpdateDaemon
-		mInterpretationList = UpdateDaemon.getDaemon().getInterpretations();
 	
-		//Fills the spinner with the name of each dataset that has comments
-		mInterpretationNameList = new String[mInterpretationList.size()];		
-		for(int i = 0; i < mInterpretationList.size(); i++)
+		//Creates a list of the resources with interpretations
+		if(UpdateDaemon.getDaemon().getNumberOfInterpretations() < 1) 
 		{
-			if(!mInterpretationList.get(i).mInfo.isEmpty()) {
-				mInterpretationNameList[i] = mInterpretationList.get(i).mInfo.get(0).mName;
+			mInterpretationNameList = new String[]{"No interpretations.."};
+		}
+		else
+		{
+			//Gets list off interpretations from UpdateDaemon
+			mInterpretationList = UpdateDaemon.getDaemon().getInterpretations();
+		
+			//Fills the spinner with the name of each dataset that has comments		
+			LinkedList<String> tempList = new LinkedList<String>();
+			for(int i = 0; i < mInterpretationList.size(); i++)
+			{
+				if(!mInterpretationList.get(i).mInfo.isEmpty()) {
+					if(mInterpretationList.get(i).mInfo.get(0).mName == null)
+					{
+						System.out.println("its null");
+					}
+					else
+					{
+						tempList.add(mInterpretationList.get(i).mInfo.get(0).mName);
+					}
+				}
 			}
+			mInterpretationNameList = tempList.toArray(new String[tempList.size()]);
 		}
 		
-		//TODO - Simen spinner fiks
-		ArrayAdapter<String> mSpnAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mInterpretationNameList);
-		mSpnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		mSpnInterpretationList.setAdapter(mSpnAdapter);
+		//Populates spinner and sets listener
+		ArrayAdapter<String> spinner_adapter = new ArrayAdapter<String>(this, R.layout.spinner_header, mInterpretationNameList);//ArrayAdapter.createFromResource(this, R.array.game_speeds, R.layout.spinner_header);
+    	spinner_adapter.setDropDownViewResource(R.layout.spinner_list_item);
+    	mSpnInterpretationList.setAdapter(spinner_adapter);
+    	mSpnInterpretationList.setOnItemSelectedListener(new OnItemSelectedListener() 
+    	{
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
+			{
+				mCurrentInterpretation = arg2;
+				showInterpretation(arg2);
+				mSpnInterpretationList.setSelection(arg2);
+			}
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) 
+			{
+				// TODO Auto-generated method stub
+			}
+		});
 		
-		//Updates the content
-		showInterpretation(mCurrentInterpretation);
+    	//Shows the current interpretation and associated resources
+    	showInterpretation(mCurrentInterpretation);
 	}
 	
 	private void showInterpretation(int interNr)
 	{
+		//Do not show interpretations if there are none to show 
+    	if(UpdateDaemon.getDaemon().getNumberOfInterpretations() < 1) return;
+    	
 		//Removes previous content
 		mCommentsContainer.removeAllViews();
 		mResourceContainer.removeAllViews();
-		//mSpnInterpretationList.setSelection(interNr);
+		mSpnInterpretationList.setSelection(interNr);
 		
 		//Creates a TextView that shows initial interpretation
 		showInitialComment(interNr);
@@ -139,8 +159,6 @@ public class InterpretationActivity extends Activity {
 			TextView tempView = new TextView(this);
 			tempView.setText("No resource associated with interpretation");
 			mResourceContainer.addView(tempView);
-			//mResourceInformer.setText("No resource associated with interpretation");
-			//if(mResourceSwitcher.getDisplayedChild() == 0)mResourceSwitcher.showNext();
 			return;
 		}
 		
@@ -150,8 +168,6 @@ public class InterpretationActivity extends Activity {
 			TextView tempView = new TextView(this);
 			tempView.setText("TODO: create a link");
 			mResourceContainer.addView(tempView);
-			//mResourceInformer.setText("TODO: create a link");
-			//if(mResourceSwitcher.getDisplayedChild() == 0)mResourceSwitcher.showNext();
 			return;
 		}
 		//If there is a chart to be drawn from the resource
@@ -161,8 +177,6 @@ public class InterpretationActivity extends Activity {
 			ImageView tempView = new ImageView(this);
 			tempView.setImageDrawable(drawable);
 			mResourceContainer.addView(tempView);
-			//mImageContainer.setImageDrawable(drawable);
-			//if(mResourceSwitcher.getDisplayedChild() == 1)mResourceSwitcher.showPrevious();
 		}
 	}
 	
@@ -170,9 +184,6 @@ public class InterpretationActivity extends Activity {
 	{		
 		mSpnInterpretationList = (Spinner) findViewById(R.id.interpretations_spinner);
 		mResourceContainer = (LinearLayout) findViewById(R.id.interpretations_resourceContainer);
-		//mResourceSwitcher = (ViewSwitcher) findViewById(R.id.interpretation_resourceSwitcher);
-		mImageContainer = (ImageView) findViewById(R.id.interpretations_imageContainer);
-		mResourceInformer = (TextView) findViewById(R.id.interpretations_resourceText);
 		mInitialComment = (TextView) findViewById(R.id.interpretations_initCommentText);
 		mUserDateInfo = (TextView) findViewById(R.id.interpretations_initCommentUserDate);
 		mCommentsContainer = (LinearLayout) findViewById(R.id.interpretations_commentContainer);
@@ -182,9 +193,7 @@ public class InterpretationActivity extends Activity {
 		{	
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
-				mCurrentInterpretation += 1;
-				showInterpretation(mCurrentInterpretation);
+				//TODO
 			}
 		});
 		mButtonRefresh = (Button) findViewById(R.id.interpretation_btnRefresh);
@@ -196,6 +205,5 @@ public class InterpretationActivity extends Activity {
 				update();				
 			}
 		});
-		
 	}	
 }

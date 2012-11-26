@@ -8,12 +8,17 @@ import java.util.Set;
 
 import no.uio.inf5750.assignment3.util.UpdateDaemon;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.WindowManager.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -84,11 +89,33 @@ public class MessageActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				Toast toast = Toast.makeText(MessageActivity.this,
-						"Reply message", Toast.LENGTH_LONG);
-				toast.show();
+				launchReplyDialog();
 			}
 		});
+	}
+	
+	public void launchReplyDialog()
+	{
+		AlertDialog.Builder builder;
+		LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.replymessage_dialog, (ViewGroup) findViewById(R.id.layout_root));
+		builder = new AlertDialog.Builder(this);
+    	builder.setView(layout);
+		final AlertDialog dialog = builder.create();
+		final EditText editText = (EditText) layout.findViewById(R.id.replydialog_edittext);
+		Button button = (Button) layout.findViewById(R.id.replydialog_replybutton);
+    	button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String replyText = editText.getText().toString();
+				Toast toast = Toast.makeText(MessageActivity.this, replyText,
+						Toast.LENGTH_LONG);
+				toast.show();
+				dialog.dismiss();
+				
+			}
+		});
+		dialog.show();
 	}
 
 	@SuppressWarnings("unchecked")
