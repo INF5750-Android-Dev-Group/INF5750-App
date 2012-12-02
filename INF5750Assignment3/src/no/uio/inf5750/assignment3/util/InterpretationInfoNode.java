@@ -6,10 +6,7 @@ public class InterpretationInfoNode {
 	public String mId = "";
 	public boolean mChart = false;
 	
-	String getImageUrl() {
+	public String getImageUrl() {
 		return ConnectionManager.getConnectionManager().getSite() + "charts/" + mId + "/data";
 	}
-	
-	//TODO
-	//Lag getChart/Image
 }

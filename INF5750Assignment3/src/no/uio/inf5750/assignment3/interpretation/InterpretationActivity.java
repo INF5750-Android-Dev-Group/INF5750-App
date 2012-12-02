@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -176,8 +177,27 @@ public class InterpretationActivity extends Activity {
 			Drawable drawable = ConnectionManager.getConnectionManager().getImage(mInterpretationList.get(InterNr).mInfo.get(0).getImageUrl());
 			ImageView tempView = new ImageView(this);
 			tempView.setImageDrawable(drawable);
+			LayoutParams tempParamp = new LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+			System.out.println(tempParamp.toString());
+			tempView.setLayoutParams(tempParamp);
+			tempView.setAdjustViewBounds(true);
 			mResourceContainer.addView(tempView);
 		}
+	}
+	
+	private void addIntepretation(int interNr)
+	{
+		if(mEditTextInterpretation.getText().toString().matches("")) return;
+		TextView tempView1 = new TextView(this);
+		//Get current user?
+		tempView1.setTextColor(getResources().getColor(R.color.Pink));
+		mCommentsContainer.addView(tempView1);
+		
+		TextView tempView2 = new TextView(this);
+		tempView2.setText(mEditTextInterpretation.getText());
+		mCommentsContainer.addView(tempView2);
+		
+		mEditTextInterpretation.setText("");
 	}
 	
 	void setActivityObjects()
@@ -193,7 +213,7 @@ public class InterpretationActivity extends Activity {
 		{	
 			public void onClick(View v) 
 			{
-				//TODO
+				addIntepretation(mCurrentInterpretation);
 			}
 		});
 		mButtonRefresh = (Button) findViewById(R.id.interpretation_btnRefresh);
