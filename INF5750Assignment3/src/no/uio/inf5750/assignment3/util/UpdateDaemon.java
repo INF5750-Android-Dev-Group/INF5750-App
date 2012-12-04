@@ -68,6 +68,7 @@ public class UpdateDaemon {
 			inter.mLastUpdated = getInterpretationsLastUpdated(i);
 			inter.mUser = addOrGetUser((JSONObject) getProperty("interpretations", i, "user"));
 			inter.mText = getInterpretationsText(i);
+			inter.mCreated = getInterpretationsCreated(i);
 			addComments(inter.mCommentThread, "interpretation", i);
 			addInfoNode(inter.mInfo, i, "map");
 			addInfoNode(inter.mInfo, i, "chart");
@@ -221,6 +222,10 @@ public class UpdateDaemon {
 	
 	private String getInterpretationsText(int id) {
 		return getStringProperty("interpretations", id, "text");
+	}
+	
+	private String getInterpretationsCreated(int id) {
+		return getStringProperty("interpretations", id, "created");
 	}
 	
 	private String getInterpretationCreator(int id) {
