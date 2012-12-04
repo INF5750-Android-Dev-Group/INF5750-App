@@ -1,6 +1,13 @@
 package no.uio.inf5750.assignment3.interpretation;
 
+import java.nio.Buffer;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
+import java.util.TimeZone;
+
 import no.uio.inf5750.assignment3.R;
 import no.uio.inf5750.assignment3.util.ConnectionManager;
 import no.uio.inf5750.assignment3.util.UpdateDaemon;
@@ -128,9 +135,12 @@ public class InterpretationActivity extends Activity {
 	
 	private void showInitialComment(int interNr)
 	{
+		//User info
 		String info = mInterpretationList.get(interNr).mUser.mName + ": ";
 		mUserDateInfo.setText(info);
 		mUserDateInfo.setTextColor(getResources().getColor(R.color.Pink));
+		
+		//Text
 		String text = mInterpretationList.get(interNr).mText;
 		mInitialComment.setText(text);
 	}
@@ -139,11 +149,15 @@ public class InterpretationActivity extends Activity {
 	{
 		for(int i = 0; i < mInterpretationList.get(interNr).mCommentThread.size(); i++)
 		{
+			//User info
 			TextView tempView1 = new TextView(this);
-			tempView1.setText(mInterpretationList.get(interNr).mCommentThread.get(i).mUser.mName + ": ");
+			String tempDate = mInterpretationList.get(interNr).mCommentThread.get(i).mCreated;
+			String date = tempDate.substring(0, Math.min(tempDate.length(), 10));
+			tempView1.setText(mInterpretationList.get(interNr).mCommentThread.get(i).mUser.mName + " (" + date + "): ");
 			tempView1.setTextColor(getResources().getColor(R.color.Pink));
 			mCommentsContainer.addView(tempView1);
 			
+			//Text
 			TextView tempView2 = new TextView(this);
 			tempView2.setText(mInterpretationList.get(interNr).mCommentThread.get(i).mText);
 			mCommentsContainer.addView(tempView2);
@@ -187,12 +201,25 @@ public class InterpretationActivity extends Activity {
 	
 	private void addIntepretation(int interNr)
 	{
+		//If empty, do nothing
 		if(mEditTextInterpretation.getText().toString().matches("")) return;
+		
+		//Updates the comment on the server
+		ConnectionManager.getConnectionManager().replyInterpretation(mInterpretationList.get(interNr).mId.toString(),
+																	 mEditTextInterpretation.getText().toString());
+		
+		//Show comment locally
+		//Get date
+		Date cDate = new Date();
+		String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
+		
+		//User info
 		TextView tempView1 = new TextView(this);
-		//Get current user?
+		tempView1.setText(ConnectionManager.getConnectionManager().getUsername() + " (" + fDate + "):");
 		tempView1.setTextColor(getResources().getColor(R.color.Pink));
 		mCommentsContainer.addView(tempView1);
 		
+		//Text
 		TextView tempView2 = new TextView(this);
 		tempView2.setText(mEditTextInterpretation.getText());
 		mCommentsContainer.addView(tempView2);
