@@ -54,7 +54,7 @@ public class DashboardChartActivity extends Activity {
 	{ 
 		final Thread setImageThread = new Thread(){
 			public void run()
-			{//Separate thread to be run on UI bc android demands that
+			{ //Separate thread to be run on UI
 				if(bmp != null)
 				{
 		        	mImageView.setImageBitmap(bmp);
