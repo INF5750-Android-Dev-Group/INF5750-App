@@ -7,5 +7,9 @@ public class Message extends ConversationBase {
 	public String mId = "";
 	public String mLastUpdated = "";
 	public boolean mRead;
+	
+	public String getConversationUrl() {
+		return ConnectionManager.getConnectionManager().getSite() + "messageConversations/" + mId;
+	}
 
 }

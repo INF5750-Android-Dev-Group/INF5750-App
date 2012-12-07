@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import no.uio.inf5750.assignment3.util.ConnectionManager;
 import no.uio.inf5750.assignment3.util.UpdateDaemon;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -112,6 +113,8 @@ public class MessageActivity extends Activity {
 						Toast.LENGTH_LONG);
 				toast.show();
 				dialog.dismiss();
+				ConnectionManager.getConnectionManager().
+					replyMessage(mIndex, replyText);
 				
 			}
 		});
@@ -135,6 +138,7 @@ public class MessageActivity extends Activity {
 		int counter = 0;
 		while (i.hasNext()) {
 			me = (Map.Entry<String, String>) i.next();
+			Log.d("actualkey", me.getKey().toString());
 			String text = me.getValue().toString();
 			me = (Map.Entry<String, String>) i.next();
 			String date = me.getValue().toString();

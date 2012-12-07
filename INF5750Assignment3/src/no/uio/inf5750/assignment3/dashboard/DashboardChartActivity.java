@@ -1,6 +1,7 @@
 package no.uio.inf5750.assignment3.dashboard;
 
 import no.uio.inf5750.assignment3.R;
+import no.uio.inf5750.assignment3.messaging.MessageActivity;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +16,7 @@ import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 
 public class DashboardChartActivity extends Activity {
@@ -41,7 +43,7 @@ public class DashboardChartActivity extends Activity {
 	}
 	
 	Bitmap bmp;
-	// For OnTouchListener:
+	// Working variables for OnTouchListener:
 	Matrix mtx = new Matrix();
 	Matrix tempMtx = new Matrix();
 	private PointF contact = new PointF(), midpoint = new PointF();
@@ -54,7 +56,7 @@ public class DashboardChartActivity extends Activity {
 	{ 
 		final Thread setImageThread = new Thread(){
 			public void run()
-			{//Separate thread to be run on UI bc android demands that
+			{ //Separate thread to be run on UI
 				if(bmp != null)
 				{
 		        	mImageView.setImageBitmap(bmp);
@@ -87,6 +89,8 @@ public class DashboardChartActivity extends Activity {
 		
 		mImageView.setOnTouchListener(new OnTouchListener()
 		{
+			/** Called when touch gestures are registered on the chart.
+			 * Handles panning and zooming. */
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				ImageView view = (ImageView) v;
@@ -148,7 +152,9 @@ public class DashboardChartActivity extends Activity {
 		{	
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
+				Toast toast = Toast.makeText(DashboardChartActivity.this,
+						R.string.general_notimplemented, Toast.LENGTH_LONG);
+				toast.show();
 			}
 		});
 
@@ -156,7 +162,9 @@ public class DashboardChartActivity extends Activity {
 		{	
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
+				Toast toast = Toast.makeText(DashboardChartActivity.this,
+						R.string.general_notimplemented, Toast.LENGTH_LONG);
+				toast.show();
 			}
 		});
 		
@@ -164,7 +172,9 @@ public class DashboardChartActivity extends Activity {
 		{	
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
+				Toast toast = Toast.makeText(DashboardChartActivity.this,
+						R.string.general_notimplemented, Toast.LENGTH_LONG);
+				toast.show();
 			}
 		});
 	}

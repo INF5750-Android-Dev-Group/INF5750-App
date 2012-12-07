@@ -2,15 +2,22 @@ package no.uio.inf5750.assignment3.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
 import android.graphics.drawable.Drawable;
 
@@ -58,6 +65,10 @@ public class ConnectionManager {
 		mPassword = password;
 	}
 	
+	public void replyMessage(int id, String message) {
+		doPost(UpdateDaemon.getDaemon().getMessage(id).getConversationUrl(), message);
+	}
+	
 	public void replyMessage(String msgId, String message) {
 		// TODO
 	}
@@ -70,19 +81,21 @@ public class ConnectionManager {
 		// TODO
 	}
 
+	private String getEncodedUserInfo() {
+		return new String(Base64.encodeBase64((mUsername+':'+mPassword).getBytes()));
+	}
+	
 	public Drawable getImage(String url)
 	{
 		Drawable drawable = null;
 
 		HttpClient httpclient = new DefaultHttpClient();
 
-		String data = mUsername+':'+mPassword;
 
 		addToLog("Starting image request..");
 
-		String encoding = new String(Base64.encodeBase64(data.getBytes()));
 		HttpGet httpget = new HttpGet(url);
-		httpget.setHeader("Authorization", "Basic " + encoding);
+		httpget.setHeader("Authorization", "Basic " + getEncodedUserInfo());
 
 		addToLog("executing image request " + httpget.getRequestLine());
 		HttpResponse response = null;
@@ -122,6 +135,38 @@ public class ConnectionManager {
 
 		return drawable;
 	}
+	
+	public void doPost(String url, String content) {
+		
+		HttpPost httppost = new HttpPost(url);
+		httppost.setHeader("Authorization", "Basic " + getEncodedUserInfo());
+		List<NameValuePair> post = new ArrayList<NameValuePair>(1);
+		post.add(new BasicNameValuePair("text", content));
+		try {
+			httppost.setEntity(new UrlEncodedFormEntity(post));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
+		HttpClient httpclient = new DefaultHttpClient();
+		boolean failed = false;
+		
+		
+		HttpResponse response = null;
+		try {
+			response = httpclient.execute(httppost);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			failed = true;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			failed = true;
+		}
+		
+	}
 
 	public String doRequest(String url)
 	{
@@ -129,11 +174,8 @@ public class ConnectionManager {
 
 		HttpClient httpclient = new DefaultHttpClient();
 
-		String data = mUsername+':'+mPassword;
-
-		String encoding = new String(Base64.encodeBase64(data.getBytes()));
 		HttpGet httpget = new HttpGet(url);
-		httpget.setHeader("Authorization", "Basic " + encoding);
+		httpget.setHeader("Authorization", "Basic " + getEncodedUserInfo());
 
 		HttpResponse response = null;
 		addToLog("Starting request..");
@@ -192,6 +234,7 @@ public class ConnectionManager {
 	{
 		mLog += lines + "\n";
 	}
+
 	public String getLog() 
 	{
 		return mLog;
