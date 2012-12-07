@@ -21,6 +21,7 @@ import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -30,6 +31,7 @@ public class DashboardActivity extends Activity {
 	private ProgressBar mProgressBar1, mProgressBar2;
 	
 	private ImageView mImageView1, mImageView2;
+	private TextView mTextViewPage;
 	private Button mButtonPrevPage, mButtonNextPage;
 
 	private Drawable mDrawable1;
@@ -57,12 +59,14 @@ public class DashboardActivity extends Activity {
 		mButtonNextPage = (Button) findViewById(R.id.dashboard_btnNextPage);
 		mImageView1 = (ImageView) findViewById(R.id.main_imageview1);
 		mImageView2 = (ImageView) findViewById(R.id.main_imageview2);
+		mTextViewPage = (TextView) findViewById(R.id.dashboard_pageNumber);
 		mProgressBar1 = (ProgressBar) findViewById(R.id.diagram_progress1);
 		mProgressBar2 = (ProgressBar) findViewById(R.id.diagram_progress2);
 
 		registerForContextMenu(mImageView1);
 		registerForContextMenu(mImageView2);
 		
+		setText();
 		setButtons();
 		setImages();
 	}
@@ -163,6 +167,7 @@ public class DashboardActivity extends Activity {
 				}
 				else {
 					mCurrentPage -= 1;
+					setText();
 					setImages();
 				}
 			}
@@ -180,6 +185,7 @@ public class DashboardActivity extends Activity {
 				}
 				else {
 					mCurrentPage += 1;
+					setText();
 					setImages();
 				}
 			}
@@ -244,6 +250,13 @@ public class DashboardActivity extends Activity {
 		        runOnUiThread(setImageThread2);
 			}
 		}.start();
+	}
+	
+	/** Updates the page number. */
+	private void setText() {
+		String pageText = String.format("Page %d/%d", mCurrentPage+1, 
+				mChartURLs.size()/mChartsPerPage + (mCharts.size() % mChartsPerPage > 0 ? 1 : 0));
+		mTextViewPage.setText(pageText);
 	}
 	
 	/** Launches the Chart activity to display a full size image. 
