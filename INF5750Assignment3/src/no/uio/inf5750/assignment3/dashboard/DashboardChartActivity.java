@@ -1,7 +1,6 @@
 package no.uio.inf5750.assignment3.dashboard;
 
 import no.uio.inf5750.assignment3.R;
-import no.uio.inf5750.assignment3.messaging.MessageActivity;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,8 +23,16 @@ public class DashboardChartActivity extends Activity {
 	private ProgressBar mProgressBar;	
 	private ImageView mImageView;
 	private Button mButtonShare, mButtonInsert, mButtonClear;
-	private Bundle extras;
+	private Bundle mExtras;
 
+	private Bitmap mBmp;
+	// Working variables for the images' OnTouchListener:
+	private Matrix mMtx = new Matrix(), mTempMtx = new Matrix();
+	private PointF mContact = new PointF(), mMidpoint = new PointF();
+	private float mDist, mTempDist;
+	private static final int PASSIVE = 0, DRAGGING = 1, ZOOMING = 2;
+	private int mState = PASSIVE;
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,25 +48,15 @@ public class DashboardChartActivity extends Activity {
 		setButtons();
 		setImage();
 	}
-	
-	Bitmap bmp;
-	// Working variables for OnTouchListener:
-	Matrix mtx = new Matrix();
-	Matrix tempMtx = new Matrix();
-	private PointF contact = new PointF(), midpoint = new PointF();
-	private float dist, tempDist;
-	static final int PASSIVE = 0;
-	static final int DRAGGING = 1;
-	static final int ZOOMING = 2;
-	private int state = PASSIVE;
+
 	private void setImage()
 	{ 
 		final Thread setImageThread = new Thread(){
 			public void run()
 			{ //Separate thread to be run on UI
-				if(bmp != null)
+				if(mBmp != null)
 				{
-		        	mImageView.setImageBitmap(bmp);
+		        	mImageView.setImageBitmap(mBmp);
 				}
 				else
 				{
@@ -75,13 +72,13 @@ public class DashboardChartActivity extends Activity {
 		{
 			public void run()
 			{
-				extras = getIntent().getExtras();
+				mExtras = getIntent().getExtras();
 				try {
-					byte [] barr = extras.getByteArray("dashboard_chart");
-					bmp = BitmapFactory.decodeByteArray(barr, 0, barr.length);
+					byte [] barr = mExtras.getByteArray("dashboard_chart");
+					mBmp = BitmapFactory.decodeByteArray(barr, 0, barr.length);
 				} catch (NullPointerException npe) {
 					npe.printStackTrace();
-					bmp = null;
+					mBmp = null;
 				}
 				runOnUiThread(setImageThread);
 			}
@@ -97,39 +94,39 @@ public class DashboardChartActivity extends Activity {
 				
 				switch(event.getAction() & MotionEvent.ACTION_MASK) {
 				case MotionEvent.ACTION_DOWN:
-					tempMtx.set(mtx);
-					contact.set(event.getX(), event.getY());
-					state = DRAGGING;
+					mTempMtx.set(mMtx);
+					mContact.set(event.getX(), event.getY());
+					mState = DRAGGING;
 					break;
 				case MotionEvent.ACTION_UP:
 				case MotionEvent.ACTION_POINTER_UP:
-					state = PASSIVE;
+					mState = PASSIVE;
 					break;
 				case MotionEvent.ACTION_MOVE:
-					if (state == DRAGGING) {
-						mtx.set(tempMtx);
-						mtx.postTranslate(event.getX() - contact.x, event.getY() - contact.y);
+					if (mState == DRAGGING) {
+						mMtx.set(mTempMtx);
+						mMtx.postTranslate(event.getX() - mContact.x, event.getY() - mContact.y);
 					}
-					else if (state == ZOOMING) {
-						dist = getDist(event);
-						if (dist > 10f) {
-							mtx.set(tempMtx);
-							float scale = dist / tempDist;
-							mtx.postScale(scale, scale, midpoint.x, midpoint.y);
+					else if (mState == ZOOMING) {
+						mDist = getDist(event);
+						if (mDist > 10f) {
+							mMtx.set(mTempMtx);
+							float scale = mDist / mTempDist;
+							mMtx.postScale(scale, scale, mMidpoint.x, mMidpoint.y);
 						}
 					}
 					break;
 				case MotionEvent.ACTION_POINTER_DOWN:
-					tempDist = getDist(event);
-					if (tempDist > 10f) {
-						tempMtx.set(mtx);
-						setMid(midpoint, event);
-						state = ZOOMING;
+					mTempDist = getDist(event);
+					if (mTempDist > 10f) {
+						mTempMtx.set(mMtx);
+						setMid(mMidpoint, event);
+						mState = ZOOMING;
 					}
 					break;
 				}
 				
-				view.setImageMatrix(mtx);
+				view.setImageMatrix(mMtx);
 				return true;
 			}
 			
