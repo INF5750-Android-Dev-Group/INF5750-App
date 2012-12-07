@@ -3,6 +3,8 @@ package no.uio.inf5750.assignment3.util;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.TreeMap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,7 +43,7 @@ public class UpdateDaemon {
 	 * Private constructor initiating the default data structures
 	 */
 	private UpdateDaemon() {
-		mJson = null;
+		mJson = new JSONObject();
 		mMessages = new LinkedList<Message>();
 		mInterpretations = new LinkedList<Interpretation>();
 		mUsers = new HashMap<String, User>();
@@ -76,7 +78,7 @@ public class UpdateDaemon {
 			msg.mUser = addOrGetUser("asdasd", "Someone");
 			mMessages.add(msg);
 		}
-		
+
 		int numInt = getJSONLength("interpretations");
 		for (int i = 0; i < numInt; i++) {
 			Interpretation inter = new Interpretation();
@@ -91,7 +93,7 @@ public class UpdateDaemon {
 			mInterpretations.add(inter);
 		}
 	}
-	
+
 	/**
 	 * Used for determining the length of a certain JSON-array
 	 * @param group array name
@@ -111,7 +113,7 @@ public class UpdateDaemon {
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * Adds Interpretation info nodes containing information about the data shown in the interpretation
 	 * @param nodes Data structure which should contain the nodes
@@ -131,7 +133,7 @@ public class UpdateDaemon {
 			return;
 		}
 	}
-	
+
 	/**
 	 * Adds comments to Interpretations (and soon messages!)
 	 * @param comments Comments are added to this structure
@@ -162,7 +164,7 @@ public class UpdateDaemon {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Creates or retrieves a use given an ID.
 	 * @param id The user's id
@@ -178,7 +180,7 @@ public class UpdateDaemon {
 		tmp.mName = name;
 		return tmp;
 	}
-	
+
 	/**
 	 * Adds or gets a user based on a JSONObject
 	 * @param o The JSONObject to be inspected
@@ -193,7 +195,7 @@ public class UpdateDaemon {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Gets a message with a certain index
 	 * @param id The index
@@ -202,7 +204,7 @@ public class UpdateDaemon {
 	public Message getMessage(int id) {
 		return mMessages.get(id);
 	}
-	
+
 	/**
 	 * Gets a interpretation with a certain index
 	 * @param id The index
@@ -211,21 +213,21 @@ public class UpdateDaemon {
 	public Interpretation getInterpretation(int id) {
 		return mInterpretations.get(id);
 	}
-	
+
 	/**
 	 * @return All the messages
 	 */
 	public LinkedList<Message> getMessages() {
 		return (LinkedList<Message>) mMessages.clone();
 	}
-	
+
 	/**
 	 * @return All the interpretations
 	 */
 	public LinkedList<Interpretation> getInterpretations() {
 		return (LinkedList<Interpretation>) mInterpretations.clone();
 	}
-	
+
 	/**
 	 * @return Number of unread messages
 	 */
@@ -241,7 +243,7 @@ public class UpdateDaemon {
 		}
 		return s;
 	}
-	
+
 	/**
 	 * Gets a certain property from a certain index in a certain array
 	 * @param array 
@@ -250,7 +252,6 @@ public class UpdateDaemon {
 	 * @return
 	 */
 	private Object getProperty(String array, int id, String property) {
-		
 		if (mJson == null) {
 			update();
 		}
@@ -264,11 +265,11 @@ public class UpdateDaemon {
 		}
 		return ret;
 	}
-	
+
 	private Boolean getBooleanProperty(String array, int id, String property) {
 		return (Boolean) getProperty(array, id, property);
 	}
-	
+
 	private String getStringProperty(String array, int id, String property) {
 		return (String) getProperty(array, id, property);
 	}
@@ -276,28 +277,28 @@ public class UpdateDaemon {
 	private String getMessageName(int id) {
 		return getStringProperty("messageConversations", id, "name");
 	}
-	
+
 	// requires updating once the latest version of the json-stream is out
 	private String getMessageTitle(int id) {
 		return getStringProperty("messageConversations", id, "name");
 	}
-	
+
 	private String getMessageLastMessage(int id) {
 		return getStringProperty("messageConversations", id, "lastMessage");
 	}
-	
+
 	private String getInterpretationsId(int id) {
 		return getStringProperty("interpretations", id, "name");
 	}
-	
+
 	private String getInterpretationsText(int id) {
 		return getStringProperty("interpretations", id, "text");
 	}
-	
+
 	private String getInterpretationsCreated(int id) {
 		return getStringProperty("interpretations", id, "created");
 	}
-	
+
 	private String getInterpretationCreator(int id) {
 		if (mJson == null) {
 			update();
@@ -313,12 +314,12 @@ public class UpdateDaemon {
 		}
 		return ret;
 	}
-	
+
 	private String getInterpretationsLastUpdated(int id) {
 		return getStringProperty("interpretations", id, "lastUpdated");
 	}
-	
-	
+
+
 	private String getMessageId(int id) {
 		return getStringProperty("messageConversations", id, "id");
 	}
@@ -329,14 +330,14 @@ public class UpdateDaemon {
 	public int getNumberOfMessages() {
 		return mMessages.size();
 	}
-	
+
 	/**
 	 * @return The number of interpretations
 	 */
 	public int getNumberOfInterpretations() {
 		return mInterpretations.size();
 	}
-	
+
 	/**
 	 * Nasty hack for messaging
 	 * @param url
@@ -371,11 +372,70 @@ public class UpdateDaemon {
 							}
 						}
 					}
-					
+
 				}
 
 			}
 		}
 		return info;
+	}
+	private LinkedList<Chart> mCharts;
+	private String prevJsonCharts = "";
+
+	// Temporary fix, until user-settings are available:
+	public void updateCharts() {
+		String jsonContent = ConnectionManager.getConnectionManager().doRequest("http://apps.dhis2.org/dev/api/charts.json");
+		if (jsonContent.equals(prevJsonCharts)) {
+			return;
+		}
+		prevJsonCharts = jsonContent;
+		try {
+			mJson = new JSONObject(jsonContent);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			mJson = null;
+			e.printStackTrace();
+			return;
+		}
+
+		mCharts.clear();
+
+		int numChart = getJSONLength("charts");
+		for (int i = 0; i < numChart; ++i) {
+			Chart chart = new Chart();
+			chart.mName = getChartsName(i);
+			chart.mLastUpdated = getChartsLastUpdated(i);
+			chart.mHref = getChartsHref(i);
+			chart.mId = getChartsId(i);
+			chart.mImageHref = chart.mHref.concat("/data");
+			mCharts.add(chart);
+		}
+	}
+
+	private String getChartsName(int id) {
+		return getStringProperty("charts", id, "name");
+	}
+
+	private String getChartsLastUpdated(int id) {
+		return getStringProperty("charts", id, "lastUpdated");
+	}
+
+	private String getChartsHref(int id) {
+		return getStringProperty("charts", id, "href");
+	}
+
+	private String getChartsId(int id) {
+		return getStringProperty("charts", id, "id");
+	}
+
+	public int getNumberOfCharts() {
+		return mCharts.size();
+	}
+
+	public void repopulateSortedChartImageHrefTree(TreeMap<String, String> chartURLTree) {
+		chartURLTree.clear();
+		for (Chart c : mCharts) {
+			chartURLTree.put(c.mName, c.mImageHref);
+		}
 	}
 }

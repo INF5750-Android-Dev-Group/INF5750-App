@@ -11,7 +11,6 @@ import no.uio.inf5750.assignment3.util.UpdateDaemon;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
