@@ -42,19 +42,22 @@
             android:id="@+id/dashboardchart_btnShare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dashboardchart_share" />
+            android:text="@string/dashboardchart_share"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/dashboardchart_btnInsert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dashboardchart_insert" />
+            android:text="@string/dashboardchart_insert"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/dashboardchart_btnClear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dashboardchart_clear" />
+            android:text="@string/dashboardchart_clear"
+            android:visibility="gone" />
 
     </LinearLayout>
 

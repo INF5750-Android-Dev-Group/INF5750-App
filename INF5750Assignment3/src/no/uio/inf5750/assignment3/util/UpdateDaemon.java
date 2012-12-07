@@ -21,8 +21,10 @@ public class UpdateDaemon {
 	private JSONObject mJson;
 	private LinkedList<Interpretation> mInterpretations;
 	private LinkedList<Message> mMessages;
+	private LinkedList<Chart> mCharts;
 	private HashMap<String, User> mUsers;
 	private String prevJson = "";
+	private String prevJsonCharts = "";
 
 	/**
 	 * Makes this class a singleton
@@ -46,6 +48,7 @@ public class UpdateDaemon {
 		mJson = new JSONObject();
 		mMessages = new LinkedList<Message>();
 		mInterpretations = new LinkedList<Interpretation>();
+		mCharts = new LinkedList<Chart>();
 		mUsers = new HashMap<String, User>();
 	}
 
@@ -379,8 +382,6 @@ public class UpdateDaemon {
 		}
 		return info;
 	}
-	private LinkedList<Chart> mCharts;
-	private String prevJsonCharts = "";
 
 	/**
 	 * Retrieves the latest charts.
