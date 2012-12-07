@@ -307,9 +307,9 @@ public class UpdateDaemon {
 	private LinkedList<Chart> mCharts;
 	private String prevJsonCharts = "";
 
-	// Temporary until user-settings are available:
+	// Temporary fix, until user-settings are available:
 	public void updateCharts() {
-		String jsonContent = ConnectionManager.getConnectionManager().doRequest("http://apps.dhis2.org/dev/api");
+		String jsonContent = ConnectionManager.getConnectionManager().doRequest("http://apps.dhis2.org/dev/api/charts.json");
 		if (jsonContent.equals(prevJsonCharts)) {
 			return;
 		}
@@ -333,6 +333,7 @@ public class UpdateDaemon {
 			chart.mHref = getChartsHref(i);
 			chart.mId = getChartsId(i);
 			chart.mImageHref = chart.mHref.concat("/data");
+			mCharts.add(chart);
 		}
 	}
 	
