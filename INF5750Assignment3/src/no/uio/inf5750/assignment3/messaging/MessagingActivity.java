@@ -15,13 +15,16 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class MessagingActivity extends Activity {
-	/** Called when the activity is first created. */
-
+	
 	private ListView mListView;
 	private Context mContext;
 	String mMessages = "";
 	private Button mButtonMessage;
 	String[] mMessageIDs;
+	
+	/** 
+	 * Called when the activity is first created. 
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -32,6 +35,9 @@ public class MessagingActivity extends Activity {
 		update();
 	}
 
+	/**
+	 * Initializes message listview and it's listener
+	 */
 	public void setupViews()
 	{
 		mListView = (ListView) findViewById(R.id.messaging_listview);
@@ -46,6 +52,9 @@ public class MessagingActivity extends Activity {
 		});
 	}
 
+	/**
+	 * Updates the list of messages
+	 */
 	public void update() {
 		UpdateDaemon.getDaemon().update();
 		LinearLayout layout = (LinearLayout) findViewById(R.id.message_list);
@@ -62,6 +71,10 @@ public class MessagingActivity extends Activity {
 		setListView(values);
 	}
 
+	/**
+	 * Sets the messagevalues in a listview
+	 * @param values messagevalues used for the listview
+	 */
 	public void setListView(String[] values)
 	{
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(mContext, R.layout.list_item, values);

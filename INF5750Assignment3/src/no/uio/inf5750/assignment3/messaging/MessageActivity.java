@@ -24,7 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MessageActivity extends Activity {
-	/** Called when the activity is first created. */
+	
 	// Not sure if we'll need this
 	String mMessage = "";
 	int mIndex;
@@ -32,6 +32,9 @@ public class MessageActivity extends Activity {
 	private Button buttonUnread;
 	private Button buttonReply;
 
+	/** 
+	 * Called when the activity is first created. 
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,6 +56,9 @@ public class MessageActivity extends Activity {
 		showMessage();
 	}
 
+	/**
+	 * Initialize button listener for message activity
+	 */
 	public void setButtons() {
 		// Create button by id
 		buttonReply = (Button) findViewById(R.id.message_reply_button);
@@ -70,6 +76,9 @@ public class MessageActivity extends Activity {
 		});
 	}
 	
+	/**
+	 * Launches a reply dialog for the message in focus
+	 */
 	public void launchReplyDialog()
 	{
 		AlertDialog.Builder builder;
@@ -94,7 +103,10 @@ public class MessageActivity extends Activity {
 		});
 		dialog.show();
 	}
-
+	
+	/**
+	 * Will show the chosen message
+	 */
 	@SuppressWarnings("unchecked")
 	public void showMessage() {
 		String messageTitle = UpdateDaemon.getDaemon().getMessage(mIndex).mTitle;
