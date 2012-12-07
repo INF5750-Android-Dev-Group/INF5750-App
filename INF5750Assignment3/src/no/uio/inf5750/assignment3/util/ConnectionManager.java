@@ -16,6 +16,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -34,7 +35,7 @@ public class ConnectionManager {
 		mUsername = "admin";
 		mPassword = "district";
 		mLog = "";
-		mSite = "http://apps.dhis2.org/dev/api/";
+		mSite = "https://apps.dhis2.org/dev/api/";
 	}
 	
 	public void setSite(String site) {
@@ -70,15 +71,11 @@ public class ConnectionManager {
 	}
 	
 	public void replyMessage(String msgId, String message) {
-		// TODO
-	}
-	
-	public void sendNewMessage(String personId, String title, String message) {
-		// TODO
+		doPost(Message.getConversationUrl(msgId), message);
 	}
 	
 	public void replyInterpretation(String interId, String message) {
-		// TODO
+		doPost(Interpretation.getInterpretationUrl(interId), message);
 	}
 
 	private String getEncodedUserInfo() {
@@ -140,10 +137,8 @@ public class ConnectionManager {
 		
 		HttpPost httppost = new HttpPost(url);
 		httppost.setHeader("Authorization", "Basic " + getEncodedUserInfo());
-		List<NameValuePair> post = new ArrayList<NameValuePair>(1);
-		post.add(new BasicNameValuePair("text", content));
 		try {
-			httppost.setEntity(new UrlEncodedFormEntity(post));
+			httppost.setEntity(new StringEntity(content));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

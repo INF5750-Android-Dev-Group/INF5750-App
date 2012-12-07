@@ -9,7 +9,15 @@ public class Message extends ConversationBase {
 	public boolean mRead;
 	
 	public String getConversationUrl() {
-		return ConnectionManager.getConnectionManager().getSite() + "messageConversations/" + mId;
+		return getConversationBaseUrl() + mId;
+	}
+	
+	public static String getConversationUrl(String id) {
+		return getConversationBaseUrl() + id;
+	}
+	
+	private static String getConversationBaseUrl() {
+		return ConnectionManager.getConnectionManager().getSite() + "messageConversations/";
 	}
 
 }

@@ -185,7 +185,7 @@ public class InterpretationActivity extends Activity {
 		}
 	}
 	
-	private void addIntepretation(int interNr)
+	private void addInterpretation(int interNr)
 	{
 		if(mEditTextInterpretation.getText().toString().matches("")) return;
 		TextView tempView1 = new TextView(this);
@@ -213,7 +213,7 @@ public class InterpretationActivity extends Activity {
 		{	
 			public void onClick(View v) 
 			{
-				addIntepretation(mCurrentInterpretation);
+				addInterpretation(mCurrentInterpretation);
 			}
 		});
 		mButtonRefresh = (Button) findViewById(R.id.interpretation_btnRefresh);
