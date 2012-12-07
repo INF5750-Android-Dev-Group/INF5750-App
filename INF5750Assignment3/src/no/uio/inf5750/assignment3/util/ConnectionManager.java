@@ -107,6 +107,8 @@ public class ConnectionManager {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
 		}
 
 		HttpEntity entity = null;

@@ -5,6 +5,7 @@ import java.util.TreeMap;
 
 import no.uio.inf5750.assignment3.R;
 import no.uio.inf5750.assignment3.util.ConnectionManager;
+import no.uio.inf5750.assignment3.util.UpdateDaemon;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -44,8 +46,11 @@ public class DashboardActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+
+		// Contacts server to get currently available charts
+		UpdateDaemon.getDaemon().updateCharts();
 		
-		initialiseChartsMap(); // TEMPORARY SOLUTION
+		updateChartsMap(); // TEMPORARY SOLUTION
 
 		mButtonPrevPage = (Button) findViewById(R.id.dashboard_btnPrevPage);
 		mButtonNextPage = (Button) findViewById(R.id.dashboard_btnNextPage);
@@ -65,8 +70,21 @@ public class DashboardActivity extends Activity {
 	@Override
 	public void onCreateContextMenu (ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		mInContextMenu = true;
-		super.onCreateContextMenu(menu,  v,  menuInfo);
+		super.onCreateContextMenu(menu, v, menuInfo);
+
+		// Contacts server to get currently available charts
+		UpdateDaemon.getDaemon().updateCharts();
+		updateChartsMap();
 		
+		if (mCharts.isEmpty()) {
+			Toast toast = Toast.makeText(DashboardActivity.this,
+					"Error: No charts available.", Toast.LENGTH_LONG);
+			toast.show();
+			mChartToReplace = 0;
+			mInContextMenu = false;
+			return;
+		}
+
 		// Determine which chart triggered the context menu:
 		if (((ImageView) v).getId() == R.id.main_imageview1) {
 			mChartToReplace = 1;
@@ -79,6 +97,7 @@ public class DashboardActivity extends Activity {
 		}
 		
 		menu.setHeaderTitle("Replace with...");
+		
 		// Populate menu with available charts:
 		for (String label : mCharts.keySet()) {
 			menu.add(0, v.getId(), 0, label);
@@ -114,8 +133,9 @@ public class DashboardActivity extends Activity {
 	}
 
 	// TEMPORARY SOLUTION UNTIL USER SETTINGS ARE RETRIEVABLE:
-	public void initialiseChartsMap() {
-		mCharts.put("ANC Coverages", "http://apps.dhis2.org/demo/api/charts/R0DVGvXDUNP/data");
+	public void updateChartsMap() {
+		UpdateDaemon.getDaemon().repopulateSortedChartImageHrefTree(mCharts);
+		/*mCharts.put("ANC Coverages", "http://apps.dhis2.org/demo/api/charts/R0DVGvXDUNP/data");
 		mCharts.put("ANC: 1-3 Coverage", "http://apps.dhis2.org/demo/api/charts/EbRN2VIbPdV/data");
 		mCharts.put("Delivery: Births attended by skilled health personel", "http://apps.dhis2.org/demo/api/charts/E9D9KmjyHnd/data");
 		mCharts.put("Disease: Mortality", "http://apps.dhis2.org/demo/api/charts/xuNxD7c6pmM/data");
@@ -128,7 +148,7 @@ public class DashboardActivity extends Activity {
 		mCharts.put("Morbidity: New cases by diagnosis Pie", "http://apps.dhis2.org/demo/api/charts/bML2tPOWjUE/data");
 		mCharts.put("Nutrition: Malnutrition and well nourished", "http://apps.dhis2.org/demo/api/charts/CVE8AxBsJFc/data");
 		mCharts.put("RCH: ANC-Delivery-Immunisation Yearly", "http://apps.dhis2.org/demo/api/charts/MHKr9RGieUL/data");
-		mCharts.put("RCH: ANC-Delivery-Reporting Rates Monthly", "http://apps.dhis2.org/demo/api/charts/gYhEwyaZTSO/data");
+		mCharts.put("RCH: ANC-Delivery-Reporting Rates Monthly", "http://apps.dhis2.org/demo/api/charts/gYhEwyaZTSO/data");*/
 	}
 	
 	/** Method for initializing button listeners. */

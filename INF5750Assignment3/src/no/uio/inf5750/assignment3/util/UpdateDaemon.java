@@ -3,12 +3,16 @@ package no.uio.inf5750.assignment3.util;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.TreeMap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
+
+import android.util.Log;
 
 
 public class UpdateDaemon {
@@ -31,6 +35,7 @@ public class UpdateDaemon {
 		mJson = null;
 		mMessages = new LinkedList<Message>();
 		mInterpretations = new LinkedList<Interpretation>();
+		mCharts = new LinkedList<Chart>();
 		mUsers = new HashMap<String, User>();
 	}
 
@@ -74,6 +79,7 @@ public class UpdateDaemon {
 			addInfoNode(inter.mInfo, i, "chart");
 			mInterpretations.add(inter);
 		}
+		
 	}
 	
 	private int getJSONLength(String group) {
@@ -296,5 +302,64 @@ public class UpdateDaemon {
 			}
 		}
 		return info;
+	}
+
+	private LinkedList<Chart> mCharts;
+	private String prevJsonCharts = "";
+
+	// Temporary until user-settings are available:
+	public void updateCharts() {
+		String jsonContent = ConnectionManager.getConnectionManager().doRequest("http://apps.dhis2.org/dev/api");
+		if (jsonContent.equals(prevJsonCharts)) {
+			return;
+		}
+		prevJsonCharts = jsonContent;
+		try {
+			mJson = new JSONObject(jsonContent);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			mJson = null;
+			e.printStackTrace();
+			return;
+		}
+
+		mCharts.clear();
+
+		int numChart = getJSONLength("charts");
+		for (int i = 0; i < numChart; ++i) {
+			Chart chart = new Chart();
+			chart.mName = getChartsName(i);
+			chart.mLastUpdated = getChartsLastUpdated(i);
+			chart.mHref = getChartsHref(i);
+			chart.mId = getChartsId(i);
+			chart.mImageHref = chart.mHref.concat("/data");
+		}
+	}
+	
+	private String getChartsName(int id) {
+		return getStringProperty("charts", id, "name");
+	}
+	
+	private String getChartsLastUpdated(int id) {
+		return getStringProperty("charts", id, "lastUpdated");
+	}
+	
+	private String getChartsHref(int id) {
+		return getStringProperty("charts", id, "href");
+	}
+	
+	private String getChartsId(int id) {
+		return getStringProperty("charts", id, "id");
+	}
+	
+	public int getNumberOfCharts() {
+		return mCharts.size();
+	}
+
+	public void repopulateSortedChartImageHrefTree(TreeMap<String, String> chartURLTree) {
+		chartURLTree.clear();
+		for (Chart c : mCharts) {
+			chartURLTree.put(c.mName, c.mImageHref);
+		}
 	}
 }
