@@ -1,6 +1,7 @@
 package no.uio.inf5750.assignment3.dashboard;
 
 import java.io.ByteArrayOutputStream;
+import java.util.LinkedList;
 import java.util.TreeMap;
 
 import no.uio.inf5750.assignment3.R;
@@ -36,9 +37,12 @@ public class DashboardActivity extends Activity {
 	
 	// TEMPORARY SOLUTION UNTIL USER SETTINGS ARE RETRIEVABLE:
 	private TreeMap<String, String> mCharts = new TreeMap<String, String>();
-	private String mChart1 = "http://apps.dhis2.org/demo/api/charts/EbRN2VIbPdV/data";
-	private String mChart2 = "http://apps.dhis2.org/demo/api/charts/MHKr9RGieUL/data";
-	private int mChartToReplace = 0;
+	private LinkedList<String> mChartURLs = new LinkedList<String>();
+	private int mCurrentPage = 0;
+	private static final int mChartsPerPage = 2;
+	private String mChart1 = null;
+	private String mChart2 = null;
+	private int mChartToReplace = -1;
 	private boolean mInContextMenu = false;
 
 	/** Called when the activity is first created. */
@@ -47,10 +51,7 @@ public class DashboardActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		// Contacts server to get currently available charts
-		UpdateDaemon.getDaemon().updateCharts();
-		
-		updateChartsMap(); // TEMPORARY SOLUTION
+		initializeChartURLs(); // TEMPORARY SOLUTION UNTIL USER-SETTINGS ARE IMPLEMENTED
 
 		mButtonPrevPage = (Button) findViewById(R.id.dashboard_btnPrevPage);
 		mButtonNextPage = (Button) findViewById(R.id.dashboard_btnNextPage);
@@ -71,27 +72,25 @@ public class DashboardActivity extends Activity {
 	public void onCreateContextMenu (ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		mInContextMenu = true;
 		super.onCreateContextMenu(menu, v, menuInfo);
-
-		// Contacts server to get currently available charts
-		UpdateDaemon.getDaemon().updateCharts();
+		
 		updateChartsMap();
 		
 		if (mCharts.isEmpty()) {
 			Toast toast = Toast.makeText(DashboardActivity.this,
 					"Error: No charts available.", Toast.LENGTH_LONG);
 			toast.show();
-			mChartToReplace = 0;
+			mChartToReplace = -1;
 			mInContextMenu = false;
 			return;
 		}
 
 		// Determine which chart triggered the context menu:
 		if (((ImageView) v).getId() == R.id.main_imageview1) {
-			mChartToReplace = 1;
+			mChartToReplace = mCurrentPage*mChartsPerPage;
 		} else if (((ImageView) v).getId() == R.id.main_imageview2) {
-			mChartToReplace = 2;
+			mChartToReplace = mCurrentPage*mChartsPerPage+1;
 		} else { // Long-press outside of a chart.
-			mChartToReplace = 0;
+			mChartToReplace = -1;
 			mInContextMenu = false;
 			return;
 		}
@@ -118,49 +117,54 @@ public class DashboardActivity extends Activity {
 			return false;
 		}
 		
-		// Replace chart to display with newly selected chart:
-		if (mChartToReplace == 1) {
-			mChart1 = tempURL;
-		} else if (mChartToReplace == 2) {
-			mChart2 = tempURL;
-		} else {
+		if (mChartURLs.get(mChartToReplace) == null) {
 			mInContextMenu = false;
 			return false;
 		}
+
+		// Replace chart to display with newly selected chart:
+		mChartURLs.set(mChartToReplace, tempURL);
+
 		setImages();
 		mInContextMenu = false;
 		return true;
 	}
+	
+	// TEMPORARY SOLUTION UNTIL USER-SETTINGS ARE AVAILABLE:
+	private void initializeChartURLs() {
+		mChartURLs.add("http://apps.dhis2.org/demo/api/charts/UlfTKWZWV4u/data");
+		mChartURLs.add("http://apps.dhis2.org/demo/api/charts/fxIAgTaTFwJ/data");
+		mChartURLs.add("http://apps.dhis2.org/demo/api/charts/E9D9KmjyHnd/data");
+		mChartURLs.add("http://apps.dhis2.org/demo/api/charts/LYhJvlJxS5Y/data");
+		mChartURLs.add("http://apps.dhis2.org/demo/api/charts/IC97MoXqmrP/data");
+		mChartURLs.add("http://apps.dhis2.org/demo/api/charts/vkVZOjsLq0E/data");
+		mChartURLs.add("http://apps.dhis2.org/demo/api/charts/Emq3LEyWb15/data");
+		mChartURLs.add("http://apps.dhis2.org/demo/api/charts/wSWxbt3TueB/data");
+	}
 
-	// TEMPORARY SOLUTION UNTIL USER SETTINGS ARE RETRIEVABLE:
+	/** Fetches available charts from the web API. */
 	public void updateChartsMap() {
+		// Contacts server to get currently available charts.
+		UpdateDaemon.getDaemon().updateCharts();
 		UpdateDaemon.getDaemon().repopulateSortedChartImageHrefTree(mCharts);
-		/*mCharts.put("ANC Coverages", "http://apps.dhis2.org/demo/api/charts/R0DVGvXDUNP/data");
-		mCharts.put("ANC: 1-3 Coverage", "http://apps.dhis2.org/demo/api/charts/EbRN2VIbPdV/data");
-		mCharts.put("Delivery: Births attended by skilled health personel", "http://apps.dhis2.org/demo/api/charts/E9D9KmjyHnd/data");
-		mCharts.put("Disease: Mortality", "http://apps.dhis2.org/demo/api/charts/xuNxD7c6pmM/data");
-		mCharts.put("HIV: ZDV rates April to July 2012", "http://apps.dhis2.org/demo/api/charts/PuvO0syzFoz/data");
-		mCharts.put("Immunization Indicators", "http://apps.dhis2.org/demo/api/charts/nxopkCcmdcT/data");
-		mCharts.put("Immunization: All Vaccines Yearly", "http://apps.dhis2.org/demo/api/charts/INtKDA1VJC0/data");
-		mCharts.put("Immunization: Drop Out Penta 1-3", "http://apps.dhis2.org/demo/api/charts/hjrucWPaRG4/data");
-		mCharts.put("Immunization: Essential vaccines", "http://apps.dhis2.org/demo/api/charts/pRBQ77mhEJ8/data");
-		mCharts.put("Immunization: Fully Immunized by Facility Type Yearly", "http://apps.dhis2.org/demo/api/charts/fxIAgTaTFwJ/data");
-		mCharts.put("Morbidity: New cases by diagnosis Pie", "http://apps.dhis2.org/demo/api/charts/bML2tPOWjUE/data");
-		mCharts.put("Nutrition: Malnutrition and well nourished", "http://apps.dhis2.org/demo/api/charts/CVE8AxBsJFc/data");
-		mCharts.put("RCH: ANC-Delivery-Immunisation Yearly", "http://apps.dhis2.org/demo/api/charts/MHKr9RGieUL/data");
-		mCharts.put("RCH: ANC-Delivery-Reporting Rates Monthly", "http://apps.dhis2.org/demo/api/charts/gYhEwyaZTSO/data");*/
 	}
 	
-	/** Method for initializing button listeners. */
+	/** Initializes button listeners for the Dashboard activity. */
 	private void setButtons() {
 		// "Previous page" button
 		mButtonPrevPage.setOnClickListener(new OnClickListener() 
 		{	
 			public void onClick(View v) 
 			{
-				Toast toast = Toast.makeText(DashboardActivity.this,
-						R.string.general_notimplemented, Toast.LENGTH_LONG);
-				toast.show();
+				if (mCurrentPage == 0) {
+					Toast toast = Toast.makeText(DashboardActivity.this,
+							"Error: Already on first page.", Toast.LENGTH_LONG);
+					toast.show();
+				}
+				else {
+					mCurrentPage -= 1;
+					setImages();
+				}
 			}
 		});
 
@@ -169,17 +173,25 @@ public class DashboardActivity extends Activity {
 		{	
 			public void onClick(View v) 
 			{
-				Toast toast = Toast.makeText(DashboardActivity.this,
-						R.string.general_notimplemented, Toast.LENGTH_LONG);
-				toast.show();
+				if ((mCurrentPage+1)*mChartsPerPage >= mChartURLs.size()) {
+					Toast toast = Toast.makeText(DashboardActivity.this,
+							"Error: Already on last page.", Toast.LENGTH_LONG);
+					toast.show();
+				}
+				else {
+					mCurrentPage += 1;
+					setImages();
+				}
 			}
 		});
 	}
 	
-	/** Method for initializing chart images and their listeners. */
+	/** Initializes chart images and their listeners for the Dashboard activity. */
 	private void setImages()
-	{ //fetching data in a thread for making things appear smoother
-
+	{ // Fetches data in a thread for making things appear smoother
+		mChart1 = mChartURLs.get(mCurrentPage*mChartsPerPage);
+		mChart2 = mChartURLs.get(mCurrentPage*mChartsPerPage+1);
+		
 		final Thread setImageThread1 = new Thread(){
 			public void run()
 			{
@@ -234,7 +246,8 @@ public class DashboardActivity extends Activity {
 		}.start();
 	}
 	
-
+	/** Launches the Chart activity to display a full size image. 
+	 * @param image Image to display. */
 	public void launchChartActivity(Drawable image)
 	{
 		// Convert to byte array for sending through Extras.

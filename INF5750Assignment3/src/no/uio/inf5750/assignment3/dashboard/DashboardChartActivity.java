@@ -41,14 +41,17 @@ public class DashboardChartActivity extends Activity {
 
 		mImageView = (ImageView) findViewById(R.id.dashboardchart_imageview);
 		mProgressBar = (ProgressBar) findViewById(R.id.dashboardchart_progress);
-		mButtonShare = (Button) findViewById(R.id.dashboardchart_btnShare);
+		
+		// Buttons not yet implemented
+		/* mButtonShare = (Button) findViewById(R.id.dashboardchart_btnShare);
 		mButtonInsert = (Button) findViewById(R.id.dashboardchart_btnInsert);
 		mButtonClear = (Button) findViewById(R.id.dashboardchart_btnClear);
+		setButtons(); */
 
-		setButtons();
 		setImage();
 	}
 
+	/** Initializes the image to display and sets up touch listeners for handling touch gestures. */
 	private void setImage()
 	{ 
 		final Thread setImageThread = new Thread(){
@@ -144,6 +147,7 @@ public class DashboardChartActivity extends Activity {
 		});
 	}
 	
+	/** Initalizes button listeners for the dashboard chart activity. */
 	private void setButtons() {
 		mButtonShare.setOnClickListener(new OnClickListener() 
 		{	
