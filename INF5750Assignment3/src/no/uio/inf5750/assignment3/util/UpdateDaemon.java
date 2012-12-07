@@ -382,7 +382,9 @@ public class UpdateDaemon {
 	private LinkedList<Chart> mCharts;
 	private String prevJsonCharts = "";
 
-	// Temporary fix, until user-settings are available:
+	/**
+	 * Retrieves the latest charts.
+	 */
 	public void updateCharts() {
 		String jsonContent = ConnectionManager.getConnectionManager().doRequest("http://apps.dhis2.org/dev/api/charts.json");
 		if (jsonContent.equals(prevJsonCharts)) {
@@ -432,6 +434,9 @@ public class UpdateDaemon {
 		return mCharts.size();
 	}
 
+	/** Fills the given TreeMap with the names and image URLs of available charts.
+	 * @param chartURLTree The TreeMap to fill. Gets cleared before filling.
+	 */
 	public void repopulateSortedChartImageHrefTree(TreeMap<String, String> chartURLTree) {
 		chartURLTree.clear();
 		for (Chart c : mCharts) {
