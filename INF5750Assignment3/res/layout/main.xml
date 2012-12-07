@@ -9,23 +9,45 @@
 
 
     <LinearLayout
-        android:id="@+id/layout_btnContainer"
+        android:id="@+id/layout_dashboardTop"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
+        
+		    <TextView
+		        android:id="@+id/txtDashboardView"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:text="@string/dashboard_header"
+		        android:textAppearance="?android:attr/textAppearanceLarge" />
+		    
+    
+	    <LinearLayout
+	        android:id="@+id/layout_btnContainer"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	
+		    <TextView
+		        android:id="@+id/dashboard_pageNumber"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/dashboard_pageNumPlaceholder"
+		        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <Button
-            android:id="@+id/dashboard_btnPrevPage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dashboard_prevpage" />
-
-        <Button
-            android:id="@+id/dashboard_btnNextPage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dashboard_nextpage" />
-
+	        <Button
+	            android:id="@+id/dashboard_btnPrevPage"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/dashboard_prevpage" />
+	
+	        <Button
+	            android:id="@+id/dashboard_btnNextPage"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/dashboard_nextpage" />
+	
+	    </LinearLayout>
     </LinearLayout>
     
     <RelativeLayout
@@ -34,9 +56,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp" >
         
-
-
-
         <ImageView
             android:id="@+id/main_imageview1"
             android:layout_width="wrap_content"

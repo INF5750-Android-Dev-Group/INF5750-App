@@ -30,5 +30,7 @@
     <string name="interpretation_Container">Resource Container</string>
     <string name="replydialog_label">Reply</string>
     <string name="general_notimplemented">Functionality not implemented</string>
+    <string name="dashboard_header">Dashboard</string>
+    <string name="dashboard_pageNumPlaceholder">Page ?/?</string>
 
 </resources>
