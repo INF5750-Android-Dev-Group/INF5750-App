@@ -1,6 +1,7 @@
 package no.uio.inf5750.assignment3.dashboard;
 
 import no.uio.inf5750.assignment3.R;
+import no.uio.inf5750.assignment3.messaging.MessageActivity;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +16,7 @@ import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 
 public class DashboardChartActivity extends Activity {
@@ -148,7 +150,9 @@ public class DashboardChartActivity extends Activity {
 		{	
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
+				Toast toast = Toast.makeText(DashboardChartActivity.this,
+						R.string.general_notimplemented, Toast.LENGTH_LONG);
+				toast.show();
 			}
 		});
 
@@ -156,7 +160,9 @@ public class DashboardChartActivity extends Activity {
 		{	
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
+				Toast toast = Toast.makeText(DashboardChartActivity.this,
+						R.string.general_notimplemented, Toast.LENGTH_LONG);
+				toast.show();
 			}
 		});
 		
@@ -164,7 +170,9 @@ public class DashboardChartActivity extends Activity {
 		{	
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
+				Toast toast = Toast.makeText(DashboardChartActivity.this,
+						R.string.general_notimplemented, Toast.LENGTH_LONG);
+				toast.show();
 			}
 		});
 	}

@@ -29,5 +29,6 @@
     <string name="dashboardchart_insert">Insert</string>
     <string name="interpretation_Container">Resource Container</string>
     <string name="replydialog_label">Reply</string>
+    <string name="general_notimplemented">Functionality not implemented</string>
 
 </resources>

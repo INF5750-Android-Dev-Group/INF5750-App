@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MotionEvent;
@@ -123,7 +124,9 @@ public class DashboardActivity extends Activity {
 		{	
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
+				Toast toast = Toast.makeText(DashboardActivity.this,
+						R.string.general_notimplemented, Toast.LENGTH_LONG);
+				toast.show();
 			}
 		});
 
@@ -131,7 +134,9 @@ public class DashboardActivity extends Activity {
 		{	
 			public void onClick(View v) 
 			{
-				// TODO Auto-generated method stub
+				Toast toast = Toast.makeText(DashboardActivity.this,
+						R.string.general_notimplemented, Toast.LENGTH_LONG);
+				toast.show();
 			}
 		});
 	}
