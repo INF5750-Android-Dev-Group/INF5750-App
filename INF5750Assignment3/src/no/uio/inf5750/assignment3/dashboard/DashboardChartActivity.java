@@ -43,7 +43,7 @@ public class DashboardChartActivity extends Activity {
 	}
 	
 	Bitmap bmp;
-	// For OnTouchListener:
+	// Working variables for OnTouchListener:
 	Matrix mtx = new Matrix();
 	Matrix tempMtx = new Matrix();
 	private PointF contact = new PointF(), midpoint = new PointF();
@@ -89,6 +89,8 @@ public class DashboardChartActivity extends Activity {
 		
 		mImageView.setOnTouchListener(new OnTouchListener()
 		{
+			/** Called when touch gestures are registered on the chart.
+			 * Handles panning and zooming. */
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				ImageView view = (ImageView) v;

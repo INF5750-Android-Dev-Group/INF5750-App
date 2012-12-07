@@ -26,14 +26,12 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MotionEvent;
 
 public class DashboardActivity extends Activity {
-
-	//private ProgressDialog mProgressDialog;
 	private ProgressBar mProgressBar1, mProgressBar2;
 	
 	private ImageView mImageView1, mImageView2;
 	private Button mButtonPrevPage, mButtonNextPage;
 	
-	// TEMPORARY, FOR TESTING:
+	// TEMPORARY SOLUTION UNTIL USER SETTINGS ARE RETRIEVABLE:
 	private TreeMap<String, String> charts = new TreeMap<String, String>();
 	private String chart1 = "http://apps.dhis2.org/demo/api/charts/EbRN2VIbPdV/data";
 	private String chart2 = "http://apps.dhis2.org/demo/api/charts/MHKr9RGieUL/data";
@@ -46,7 +44,7 @@ public class DashboardActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
-		initialiseChartsMap(); // TEMPORARY, FOR TESTING
+		initialiseChartsMap(); // TEMPORARY SOLUTION
 
 		mButtonPrevPage = (Button) findViewById(R.id.dashboard_btnPrevPage);
 		mButtonNextPage = (Button) findViewById(R.id.dashboard_btnNextPage);
@@ -62,32 +60,45 @@ public class DashboardActivity extends Activity {
 		setImages();
 	}
 	
+	/** Opens context menu when long-pressing a chart. */
 	@Override
 	public void onCreateContextMenu (ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		inContextMenu = true;
 		super.onCreateContextMenu(menu,  v,  menuInfo);
+		
+		// Determine which chart triggered the context menu:
 		if (((ImageView) v).getId() == R.id.main_imageview1) {
 			chartToReplace = 1;
 		} else if (((ImageView) v).getId() == R.id.main_imageview2) {
 			chartToReplace = 2;
-		} else {
+		} else { // Long-press outside of a chart.
 			chartToReplace = 0;
 			inContextMenu = false;
 			return;
 		}
+		
 		menu.setHeaderTitle("Replace with...");
+		// Populate menu with available charts:
 		for (String label : charts.keySet()) {
 			menu.add(0, v.getId(), 0, label);
 		}
 	}
 	
+	/** Called when an element is selected from context menu.
+	 * @return Returns true when chart is successfully replaced,
+	 *         otherwise false. */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
+		// Get URL for chart user selected:
 		String tempURL = charts.get(item.getTitle());
+		
+		// Return if URL not found:
 		if (tempURL == null) {
 			inContextMenu = false;
 			return false;
 		}
+		
+		// Replace chart to display with newly selected chart:
 		if (chartToReplace == 1) {
 			chart1 = tempURL;
 		} else if (chartToReplace == 2) {
@@ -100,8 +111,8 @@ public class DashboardActivity extends Activity {
 		inContextMenu = false;
 		return true;
 	}
-	
-	// TEMPORARY, FOR TESTING:
+
+	// TEMPORARY SOLUTION UNTIL USER SETTINGS ARE RETRIEVABLE:
 	public void initialiseChartsMap() {
 		charts.put("ANC Coverages", "http://apps.dhis2.org/demo/api/charts/R0DVGvXDUNP/data");
 		charts.put("ANC: 1-3 Coverage", "http://apps.dhis2.org/demo/api/charts/EbRN2VIbPdV/data");
@@ -119,7 +130,9 @@ public class DashboardActivity extends Activity {
 		charts.put("RCH: ANC-Delivery-Reporting Rates Monthly", "http://apps.dhis2.org/demo/api/charts/gYhEwyaZTSO/data");
 	}
 	
+	/** Method for initializing button listeners. */
 	private void setButtons() {
+		// "Previous page" button
 		mButtonPrevPage.setOnClickListener(new OnClickListener() 
 		{	
 			public void onClick(View v) 
@@ -130,6 +143,7 @@ public class DashboardActivity extends Activity {
 			}
 		});
 
+		// "Next page" button
 		mButtonNextPage.setOnClickListener(new OnClickListener() 
 		{	
 			public void onClick(View v) 
@@ -143,12 +157,13 @@ public class DashboardActivity extends Activity {
 	
 	Drawable drawable1;
 	Drawable drawable2;
+	/** Method for initializing chart images and their listeners. */
 	private void setImages()
 	{ //fetching data in a thread for making things appear smoother
 
 		final Thread setImageThread1 = new Thread(){
 			public void run()
-			{//Separate thread to be run on UI bc android demands that
+			{
 				if(drawable1!=null)
 				{
 		        	mImageView1.setImageDrawable(drawable1);
@@ -161,9 +176,10 @@ public class DashboardActivity extends Activity {
 	        	mProgressBar1.setVisibility(View.INVISIBLE);
 			}
 		};
+
 		final Thread setImageThread2 = new Thread(){
 			public void run()
-			{//Separate thread to be run on UI bc android demands that
+			{
 		        if(drawable2!=null)
 		        {
 		        	mImageView2.setImageDrawable(drawable2);
@@ -182,7 +198,6 @@ public class DashboardActivity extends Activity {
 		{
 			public void run()
 			{
-//				drawable1 = ConnectionManager.getConnectionManager().getImage("http://apps.dhis2.org/demo/api/charts/EbRN2VIbPdV/data");
 				drawable1 = ConnectionManager.getConnectionManager().getImage(chart1);
 				mImageView1.setOnTouchListener(new DashboardOnTouchListener(drawable1));
 				runOnUiThread(setImageThread1);
@@ -193,14 +208,11 @@ public class DashboardActivity extends Activity {
 		{
 			public void run()
 			{
-//				drawable2 = ConnectionManager.getConnectionManager().getImage("http://apps.dhis2.org/demo/api/charts/MHKr9RGieUL/data");
 				drawable2 = ConnectionManager.getConnectionManager().getImage(chart2);
 				mImageView2.setOnTouchListener(new DashboardOnTouchListener(drawable2));
 		        runOnUiThread(setImageThread2);
 			}
 		}.start();
-		
-		
 	}
 	
 
@@ -217,6 +229,7 @@ public class DashboardActivity extends Activity {
 		startActivity(intent);
 	}
 	
+	/** Touch listener class for the chart images. */
 	class DashboardOnTouchListener implements OnTouchListener {
 		Drawable drawable;
 		
@@ -224,6 +237,8 @@ public class DashboardActivity extends Activity {
 			drawable = draw;
 		}
 		
+		/** Called when a touch is registered on the charts.
+		 * Only registers short-presses to avoid interfering with long-press context menu. */
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 			if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP && !inContextMenu) {
