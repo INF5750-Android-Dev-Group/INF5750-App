@@ -205,7 +205,7 @@ public class InterpretationActivity extends Activity {
 		if(mEditTextInterpretation.getText().toString().matches("")) return;
 		
 		//Updates the comment on the server
-		ConnectionManager.getConnectionManager().replyInterpretation(mInterpretationList.get(interNr).mId.toString(),
+		ConnectionManager.getConnectionManager().replyInterpretation(mInterpretationList.get(interNr).mId,
 																	 mEditTextInterpretation.getText().toString());
 		
 		//Show comment locally

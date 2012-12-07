@@ -22,79 +22,131 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.graphics.drawable.Drawable;
 
+/**
+ * ConnectionManager is used to communicate with the server and store
+ * authentication information
+ * @author Jan Anders Bremer
+ */
+
 public class ConnectionManager {
 	private static ConnectionManager mManager = null;
 	private String mUsername, mPassword, mLog, mSite;
 
+	/**
+	 * Makes this class a singleton
+	 */
 	static {
 		mManager =  new ConnectionManager();
 	}
 
+	/**
+	 * Only a private constructor is available for this class
+	 */
 	private ConnectionManager() 
 	{
 		mUsername = "admin";
 		mPassword = "district";
 		mLog = "";
-		mSite = "https://apps.dhis2.org/dev/api/";
+		mSite = "http://apps.dhis2.org/dev/api/";
 	}
 	
+	/**
+	 * Changes the site the app uses
+	 * @param site The new site
+	 */
 	public void setSite(String site) {
 		mSite = site;
 	}
 	
+	/**
+	 * @return The current site URL.
+	 */
 	public String getSite() {
 		return mSite;
 	}
 
+	/**
+	 * @return The ConnectionManager instance
+	 */
 	public static ConnectionManager getConnectionManager() 
 	{
 		return mManager;
 	}
-
+	
+	/**
+	 * @return Username of the current user
+	 */
 	public String getUsername() 
 	{
 		return mUsername;
 	}
 
+	/**
+	 * Changes username
+	 * @param username The new user
+	 */
 	public void setUsername(String username) 
 	{
 		mUsername = username;
 	}
 
+	/**
+	 * Changes password
+	 * @param password New password
+	 */
 	public void setPassword(String password) 
 	{
 		mPassword = password;
 	}
 	
+	/**
+	 * Used to reply to a message
+	 * @param id Position in message-array
+	 * @param message The reply
+	 */
 	public void replyMessage(int id, String message) {
 		doPost(UpdateDaemon.getDaemon().getMessage(id).getConversationUrl(), message);
 	}
 	
+	/**
+	 * Used to reply to a message
+	 * @param msgId String containing the messageId
+	 * @param message The reply 
+	 */
 	public void replyMessage(String msgId, String message) {
 		doPost(Message.getConversationUrl(msgId), message);
 	}
 	
+	/**
+	 * Adds a comment to an interpretation
+	 * @param interId String containg the interpretation Id
+	 * @param message The reply
+	 */
 	public void replyInterpretation(String interId, String message) {
 		doPost(Interpretation.getInterpretationUrl(interId), message);
 	}
 
+	/**
+	 * @return Base64 encoded username and password.
+	 */
 	private String getEncodedUserInfo() {
 		return new String(Base64.encodeBase64((mUsername+':'+mPassword).getBytes()));
 	}
 	
+	/**
+	 * Retrieves a given image
+	 * @param url The location of the image
+	 * @return Drawable containing the image
+	 */
 	public Drawable getImage(String url)
 	{
 		Drawable drawable = null;
 
 		HttpClient httpclient = new DefaultHttpClient();
 
-
-		addToLog("Starting image request..");
-
 		HttpGet httpget = new HttpGet(url);
 		httpget.setHeader("Authorization", "Basic " + getEncodedUserInfo());
 
-		addToLog("executing image request " + httpget.getRequestLine());
 		HttpResponse response = null;
 		try {
 			response = httpclient.execute(httpget);
@@ -133,8 +185,12 @@ public class ConnectionManager {
 		return drawable;
 	}
 	
+	/**
+	 * Executes a HTTP post with a given content
+	 * @param url POST URL
+	 * @param content The content to be sent in the post
+	 */
 	public void doPost(String url, String content) {
-		
 		HttpPost httppost = new HttpPost(url);
 		httppost.setHeader("Authorization", "Basic " + getEncodedUserInfo());
 		try {
@@ -145,7 +201,6 @@ public class ConnectionManager {
 			return;
 		}
 		HttpClient httpclient = new DefaultHttpClient();
-		boolean failed = false;
 		
 		
 		HttpResponse response = null;
@@ -154,15 +209,18 @@ public class ConnectionManager {
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			failed = true;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			failed = true;
 		}
 		
 	}
-
+	
+	/**
+	 * Retrieves a given url 
+	 * @param url The url retrieved
+	 * @return The content of what the url is pointing at
+	 */
 	public String doRequest(String url)
 	{
 		String output = "";
@@ -173,25 +231,17 @@ public class ConnectionManager {
 		httpget.setHeader("Authorization", "Basic " + getEncodedUserInfo());
 
 		HttpResponse response = null;
-		addToLog("Starting request..");
-		boolean failed = false;
-		addToLog(url);
 		try {
 			response = httpclient.execute(httpget);
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			failed = true;
+			return "";
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			failed = true;
-		}
-		if (failed) {
-			addToLog("Request failed.");
 			return "";
 		}
-		addToLog("Done.");
 		HttpEntity entity = null;
 		if(response!=null)
 		{
@@ -201,8 +251,6 @@ public class ConnectionManager {
 		if(entity!=null)
 		{
 			try {
-
-
 				InputStream is = entity.getContent();
 				Scanner sc = new Scanner(is);
 				output = "";
@@ -223,21 +271,6 @@ public class ConnectionManager {
 
 		return output;
 
-	}
-
-	private void addToLog(String lines) 
-	{
-		mLog += lines + "\n";
-	}
-
-	public String getLog() 
-	{
-		return mLog;
-	}
-
-	public void clearLog() 
-	{
-		mLog = "";
 	}
 
 }

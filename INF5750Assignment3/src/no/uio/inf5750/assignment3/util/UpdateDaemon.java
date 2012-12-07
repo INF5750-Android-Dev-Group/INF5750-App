@@ -10,7 +10,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
-
+/**
+ * This class is used to keep store information about interpretations and conversations
+ * @author Jan Anders Bremer
+ */
 public class UpdateDaemon {
 	private static UpdateDaemon mDaemon;
 	private JSONObject mJson;
@@ -19,14 +22,24 @@ public class UpdateDaemon {
 	private HashMap<String, User> mUsers;
 	private String prevJson = "";
 
+	/**
+	 * Makes this class a singleton
+	 */
 	static {
 		mDaemon = new UpdateDaemon();
 	}
 
+	/**
+	 * Returns the Daemon-instance
+	 * @return
+	 */
 	public static UpdateDaemon getDaemon() {
 		return mDaemon;
 	}
 
+	/**
+	 * Private constructor initiating the default data structures
+	 */
 	private UpdateDaemon() {
 		mJson = null;
 		mMessages = new LinkedList<Message>();
@@ -34,6 +47,9 @@ public class UpdateDaemon {
 		mUsers = new HashMap<String, User>();
 	}
 
+	/**
+	 * Retrieves the latest version of the messages and interpretations
+	 */
 	public void update() {
 		String jsonContent = ConnectionManager.getConnectionManager().doRequest("http://apps.dhis2.org/dev/api/currentUser/inbox");
 		if (jsonContent.equals(prevJson)) {
@@ -76,6 +92,11 @@ public class UpdateDaemon {
 		}
 	}
 	
+	/**
+	 * Used for determining the length of a certain JSON-array
+	 * @param group array name
+	 * @return The length of the array
+	 */
 	private int getJSONLength(String group) {
 		if (mJson == null) {
 			update();
@@ -91,6 +112,12 @@ public class UpdateDaemon {
 		return ret;
 	}
 	
+	/**
+	 * Adds Interpretation info nodes containing information about the data shown in the interpretation
+	 * @param nodes Data structure which should contain the nodes
+	 * @param id The interpretation id
+	 * @param type Interpretation type
+	 */
 	private void addInfoNode(LinkedList<InterpretationInfoNode> nodes, int id, String type) {
 		try {
 			JSONObject chartJson = mJson.getJSONArray("interpretations").getJSONObject(id).getJSONObject(type);
@@ -105,11 +132,17 @@ public class UpdateDaemon {
 		}
 	}
 	
+	/**
+	 * Adds comments to Interpretations (and soon messages!)
+	 * @param comments Comments are added to this structure
+	 * @param category Determines which json-object to inspect
+	 * @param id The id of the object in the category-array
+	 */
 	private void addComments(LinkedList<Comment> comments, String category, int id) {
 		comments.clear();
 		JSONArray jsonComments = null;
 		try {
-			jsonComments = mJson.getJSONArray("interpretations").
+			jsonComments = mJson.getJSONArray(category).
 					getJSONObject(id).getJSONArray("comments");
 		} catch (JSONException e) {
 			return;
@@ -130,6 +163,12 @@ public class UpdateDaemon {
 		}
 	}
 	
+	/**
+	 * Creates or retrieves a use given an ID.
+	 * @param id The user's id
+	 * @param name The user's name
+	 * @return The user
+	 */
 	private User addOrGetUser(String id, String name) {
 		if (mUsers.containsKey(id)) {
 			return mUsers.get(id);
@@ -140,6 +179,11 @@ public class UpdateDaemon {
 		return tmp;
 	}
 	
+	/**
+	 * Adds or gets a user based on a JSONObject
+	 * @param o The JSONObject to be inspected
+	 * @return The user
+	 */
 	private User addOrGetUser(JSONObject o) {
 		try {
 			return addOrGetUser(o.getString("id"), o.getString("name"));
@@ -150,22 +194,41 @@ public class UpdateDaemon {
 		return null;
 	}
 	
+	/**
+	 * Gets a message with a certain index
+	 * @param id The index
+	 * @return The message
+	 */
 	public Message getMessage(int id) {
 		return mMessages.get(id);
 	}
 	
+	/**
+	 * Gets a interpretation with a certain index
+	 * @param id The index
+	 * @return The interpretation
+	 */
 	public Interpretation getInterpretation(int id) {
 		return mInterpretations.get(id);
 	}
 	
+	/**
+	 * @return All the messages
+	 */
 	public LinkedList<Message> getMessages() {
 		return (LinkedList<Message>) mMessages.clone();
 	}
 	
+	/**
+	 * @return All the interpretations
+	 */
 	public LinkedList<Interpretation> getInterpretations() {
 		return (LinkedList<Interpretation>) mInterpretations.clone();
 	}
 	
+	/**
+	 * @return Number of unread messages
+	 */
 	public int getUnreadMessages() {
 		if (mJson == null) {
 			update();
@@ -179,6 +242,13 @@ public class UpdateDaemon {
 		return s;
 	}
 	
+	/**
+	 * Gets a certain property from a certain index in a certain array
+	 * @param array 
+	 * @param id
+	 * @param property
+	 * @return
+	 */
 	private Object getProperty(String array, int id, String property) {
 		
 		if (mJson == null) {
@@ -195,11 +265,11 @@ public class UpdateDaemon {
 		return ret;
 	}
 	
-	public Boolean getBooleanProperty(String array, int id, String property) {
+	private Boolean getBooleanProperty(String array, int id, String property) {
 		return (Boolean) getProperty(array, id, property);
 	}
 	
-	public String getStringProperty(String array, int id, String property) {
+	private String getStringProperty(String array, int id, String property) {
 		return (String) getProperty(array, id, property);
 	}
 
@@ -253,14 +323,25 @@ public class UpdateDaemon {
 		return getStringProperty("messageConversations", id, "id");
 	}
 
+	/**
+	 * @return The number of messages
+	 */
 	public int getNumberOfMessages() {
 		return mMessages.size();
 	}
 	
+	/**
+	 * @return The number of interpretations
+	 */
 	public int getNumberOfInterpretations() {
 		return mInterpretations.size();
 	}
 	
+	/**
+	 * Nasty hack for messaging
+	 * @param url
+	 * @return
+	 */
 	public LinkedHashMap<String, String> getMessage(String url) {
 		LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
 		String messageList = ConnectionManager.getConnectionManager()

@@ -56,36 +56,12 @@ public class MessageActivity extends Activity {
 
 	public void setButtons() {
 		// Create button by id
-		buttonUnread = (Button) findViewById(R.id.message_unread_button);
-		buttonRemove = (Button) findViewById(R.id.message_remove_button);
 		buttonReply = (Button) findViewById(R.id.message_reply_button);
 
 		// Set text
-		buttonUnread.setText(getString(R.string.message_unread_button));
-		buttonRemove.setText(getString(R.string.message_remove_button));
 		buttonReply.setText(getString(R.string.message_reply_button));
 
 		// Set onclicklistener
-		buttonUnread.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Toast toast = Toast.makeText(MessageActivity.this,
-						"Mark message as unread", Toast.LENGTH_LONG);
-				toast.show();
-			}
-		});
-
-		buttonRemove.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Toast toast = Toast.makeText(MessageActivity.this, "Remove message",
-						Toast.LENGTH_LONG);
-				toast.show();
-			}
-		});
-
 		buttonReply.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -109,12 +85,11 @@ public class MessageActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				String replyText = editText.getText().toString();
-				Toast toast = Toast.makeText(MessageActivity.this, replyText,
-						Toast.LENGTH_LONG);
-				toast.show();
 				dialog.dismiss();
 				ConnectionManager.getConnectionManager().
 					replyMessage(mIndex, replyText);
+				UpdateDaemon.getDaemon().update();
+				showMessage();
 				
 			}
 		});
@@ -138,7 +113,6 @@ public class MessageActivity extends Activity {
 		int counter = 0;
 		while (i.hasNext()) {
 			me = (Map.Entry<String, String>) i.next();
-			Log.d("actualkey", me.getKey().toString());
 			String text = me.getValue().toString();
 			me = (Map.Entry<String, String>) i.next();
 			String date = me.getValue().toString();
@@ -146,8 +120,6 @@ public class MessageActivity extends Activity {
 			String sender = me.getValue().toString();
 
 			values[counter++] = sender + "\t" + date + "\n\n" + text;
-			Log.d("KEY", me.getKey().toString());
-			Log.d("Value", me.getValue().toString());
 		}
 
 		ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.list_item,
