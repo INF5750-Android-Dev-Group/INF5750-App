@@ -1,8 +1,10 @@
 package no.uio.inf5750.assignment3;
 
+import no.uio.inf5750.assignment3.util.ConnectionManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,7 +18,9 @@ public class MainActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
+		ConnectionManager.getConnectionManager().setContext(getApplicationContext());
 		setContentView(R.layout.login);
 		
 		mContext = this;

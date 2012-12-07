@@ -16,7 +16,11 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.IBinder;
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
 /**
@@ -28,6 +32,8 @@ import android.graphics.drawable.Drawable;
 public class ConnectionManager {
 	private static ConnectionManager mManager = null;
 	private String mUsername, mPassword, mLog, mSite;
+	private ConnectivityManager mConn = null;
+	private Context mContext = null;
 
 	/**
 	 * Makes this class a singleton
@@ -70,6 +76,23 @@ public class ConnectionManager {
 		return mManager;
 	}
 	
+	public void setContext(Context c) {
+		mContext = c;
+	}
+	
+	/**
+	 * @return Online status
+	 */
+	public boolean getOnlineStatus() {
+		if (mConn == null) {
+			mConn = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+		}
+		NetworkInfo info = mConn.getActiveNetworkInfo();
+		if (info == null) {
+		    return false;
+		}
+		return info.isConnected();
+	}
 	/**
 	 * @return Username of the current user
 	 */
@@ -137,6 +160,9 @@ public class ConnectionManager {
 	 */
 	public Drawable getImage(String url)
 	{
+		if (!getOnlineStatus()) {
+			return null;
+		}
 		Drawable drawable = null;
 
 		HttpClient httpclient = new DefaultHttpClient();
@@ -187,7 +213,10 @@ public class ConnectionManager {
 	 * @param url POST URL
 	 * @param content The content to be sent in the post
 	 */
-	public void doPost(String url, String content) {
+	boolean doPost(String url, String content) {
+		if (!getOnlineStatus()) {
+			return false;
+		}
 		HttpPost httppost = new HttpPost(url);
 		httppost.setHeader("Authorization", "Basic " + getEncodedUserInfo());
 		try {
@@ -195,7 +224,7 @@ public class ConnectionManager {
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return;
+			return false;
 		}
 		HttpClient httpclient = new DefaultHttpClient();
 		
@@ -206,11 +235,13 @@ public class ConnectionManager {
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
-		
+		return true;
 	}
 	
 	/**
@@ -220,6 +251,9 @@ public class ConnectionManager {
 	 */
 	public String doRequest(String url)
 	{
+		if (!getOnlineStatus()) {
+			return "";
+		}
 		String output = "";
 
 		HttpClient httpclient = new DefaultHttpClient();

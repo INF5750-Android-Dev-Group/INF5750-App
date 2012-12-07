@@ -53,6 +53,9 @@ public class UpdateDaemon {
 	 * Retrieves the latest version of the messages and interpretations
 	 */
 	public void update() {
+		if (!ConnectionManager.getConnectionManager().getOnlineStatus()) {
+			return;
+		}
 		String jsonContent = ConnectionManager.getConnectionManager().doRequest("http://apps.dhis2.org/dev/api/currentUser/inbox");
 		if (jsonContent.equals(prevJson)) {
 			return;
@@ -232,6 +235,9 @@ public class UpdateDaemon {
 	 * @return Number of unread messages
 	 */
 	public int getUnreadMessages() {
+		if (!ConnectionManager.getConnectionManager().getOnlineStatus()) {
+			return 0;
+		}
 		if (mJson == null) {
 			update();
 		}
@@ -252,6 +258,9 @@ public class UpdateDaemon {
 	 * @return
 	 */
 	private Object getProperty(String array, int id, String property) {
+		if (!ConnectionManager.getConnectionManager().getOnlineStatus()) {
+			return null;
+		}
 		if (mJson == null) {
 			update();
 		}
@@ -300,6 +309,9 @@ public class UpdateDaemon {
 	}
 
 	private String getInterpretationCreator(int id) {
+		if (!ConnectionManager.getConnectionManager().getOnlineStatus()) {
+			return "";
+		}
 		if (mJson == null) {
 			update();
 		}
@@ -328,6 +340,9 @@ public class UpdateDaemon {
 	 * @return The number of messages
 	 */
 	public int getNumberOfMessages() {
+		if (!ConnectionManager.getConnectionManager().getOnlineStatus()) {
+			return 0;
+		}
 		return mMessages.size();
 	}
 
@@ -335,6 +350,9 @@ public class UpdateDaemon {
 	 * @return The number of interpretations
 	 */
 	public int getNumberOfInterpretations() {
+		if (!ConnectionManager.getConnectionManager().getOnlineStatus()) {
+			return 0;
+		}
 		return mInterpretations.size();
 	}
 
@@ -344,6 +362,9 @@ public class UpdateDaemon {
 	 * @return
 	 */
 	public LinkedHashMap<String, String> getMessage(String url) {
+		if (!ConnectionManager.getConnectionManager().getOnlineStatus()) {
+			return new LinkedHashMap<String, String>();
+		}
 		LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
 		String messageList = ConnectionManager.getConnectionManager()
 				.doRequest(url);
