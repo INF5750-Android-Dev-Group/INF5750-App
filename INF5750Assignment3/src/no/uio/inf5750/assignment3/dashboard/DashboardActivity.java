@@ -7,6 +7,7 @@ import java.util.TreeMap;
 import no.uio.inf5750.assignment3.R;
 import no.uio.inf5750.assignment3.util.ConnectionManager;
 import no.uio.inf5750.assignment3.util.UpdateDaemon;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -253,9 +254,10 @@ public class DashboardActivity extends Activity {
 	}
 	
 	/** Updates the page number. */
+	@SuppressLint("DefaultLocale")
 	private void setText() {
 		String pageText = String.format("Page %d/%d", mCurrentPage+1, 
-				mChartURLs.size()/mChartsPerPage + (mCharts.size() % mChartsPerPage > 0 ? 1 : 0));
+				mChartURLs.size()/mChartsPerPage + ((mChartURLs.size() % mChartsPerPage) & 1));
 		mTextViewPage.setText(pageText);
 	}
 	
