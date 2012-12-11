@@ -196,6 +196,10 @@ public class DashboardActivity extends Activity {
 	/** Initializes chart images and their listeners for the Dashboard activity. */
 	private void setImages()
 	{ // Fetches data in a thread for making things appear smoother
+    	mProgressBar1.setVisibility(View.VISIBLE);
+    	mProgressBar2.setVisibility(View.VISIBLE);
+		mImageView1.setVisibility(View.INVISIBLE);
+		mImageView2.setVisibility(View.INVISIBLE);
 		mChart1 = mChartURLs.get(mCurrentPage*mChartsPerPage);
 		mChart2 = mChartURLs.get(mCurrentPage*mChartsPerPage+1);
 		
