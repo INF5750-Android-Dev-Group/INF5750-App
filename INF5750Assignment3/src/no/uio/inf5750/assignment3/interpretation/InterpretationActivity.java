@@ -207,24 +207,9 @@ public class InterpretationActivity extends Activity {
 		//Updates the comment on the server
 		ConnectionManager.getConnectionManager().replyInterpretation(mInterpretationList.get(interNr).mId,
 																	 mEditTextInterpretation.getText().toString());
-		
-		//Show comment locally
-		//Get date
-		Date cDate = new Date();
-		String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
-		
-		//User info
-		TextView tempView1 = new TextView(this);
-		tempView1.setText(ConnectionManager.getConnectionManager().getUsername() + " (" + fDate + "):");
-		tempView1.setTextColor(getResources().getColor(R.color.Pink));
-		mCommentsContainer.addView(tempView1);
-		
-		//Text
-		TextView tempView2 = new TextView(this);
-		tempView2.setText(mEditTextInterpretation.getText());
-		mCommentsContainer.addView(tempView2);
-		
 		mEditTextInterpretation.setText("");
+		
+		update();
 	}
 	
 	void setActivityObjects()

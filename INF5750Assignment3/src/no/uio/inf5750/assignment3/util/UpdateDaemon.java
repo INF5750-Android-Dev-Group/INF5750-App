@@ -56,7 +56,8 @@ public class UpdateDaemon {
 	 * Retrieves the latest version of the messages and interpretations
 	 */
 	public void update() {
-		String jsonContent = ConnectionManager.getConnectionManager().doRequest("http://apps.dhis2.org/dev/api/currentUser/inbox");
+		String jsonContent = ConnectionManager.getConnectionManager().doRequest(
+				ConnectionManager.getConnectionManager().getSite() + "currentUser/inbox");
 		if (jsonContent.equals(prevJson)) {
 			return;
 		}
@@ -90,7 +91,7 @@ public class UpdateDaemon {
 			inter.mUser = addOrGetUser((JSONObject) getProperty("interpretations", i, "user"));
 			inter.mText = getInterpretationsText(i);
 			inter.mCreated = getInterpretationsCreated(i);
-			addComments(inter.mCommentThread, "interpretation", i);
+			addComments(inter.mCommentThread, "interpretations", i);
 			addInfoNode(inter.mInfo, i, "map");
 			addInfoNode(inter.mInfo, i, "chart");
 			mInterpretations.add(inter);
@@ -150,6 +151,7 @@ public class UpdateDaemon {
 			jsonComments = mJson.getJSONArray(category).
 					getJSONObject(id).getJSONArray("comments");
 		} catch (JSONException e) {
+			e.printStackTrace();
 			return;
 		} 
 		try {
